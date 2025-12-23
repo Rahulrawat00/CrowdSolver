@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .solutions-wrapper {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .solution-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .solution-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+
+        .solution-meta {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .solution-description {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .solution-label {
+            font-weight: 600;
+            color: #334155;
+        }
+    </style>
+</head>
+<body>
+
+<div class="solutions-wrapper">
+    {% if solutions %}
+    <div class="solution-card">
+        <div class="solution-title">
+            Resolved Issues Summary
+        </div>
+        <div class="solution-meta">
+            <span class="solution-label">Total Votes on Resolved Issues:</span>
+            {{ total_votes }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% for sol in solutions %}
+    <div class="solution-card">
+        <div class="solution-title">
+            {{ sol.title }}
+        </div>
+
+        <div class="solution-meta">
+            <span class="solution-label">Created by:</span>
+            {{ sol.submitted_by.memberName }}
+        </div>
+
+        <div class="solution-meta">
+            <span class="solution-label">Total Votes:</span>
+            {{ sol.approve_count|add:sol.reject_count }}
+        </div>
+
+        <div class="solution-description">
+            <span class="solution-label">Description:</span><br>
+            {{ sol.Description }}
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

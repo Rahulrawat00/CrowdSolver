@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP | CrowdSolver</title>
+
+<style>
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1e40af;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+    --danger:#ef4444;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Segoe UI",system-ui,sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
+        var(--bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+/* ===== CARD ===== */
+.verify-card{
+    width:100%;
+    max-width:420px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px 34px;
+    box-shadow:0 25px 50px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+/* ===== HEADER ===== */
+.verify-card h2{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.verify-card p{
+    margin:10px 0 28px;
+    font-size:14px;
+    color:var(--muted);
+}
+
+/* ===== ERROR ===== */
+.error-msg{
+    margin-bottom:18px;
+    padding:10px 14px;
+    background:#fef2f2;
+    color:var(--danger);
+    border-radius:10px;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* ===== FORM ===== */
+label{
+    display:block;
+    text-align:left;
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
+}
+
+input[type="text"]{
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    margin-bottom:22px;
+    letter-spacing:10px;
+    text-align:center;
+}
+
+input:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:#ffffff;
+}
+
+/* ===== BUTTON ===== */
+.verify-btn{
+    width:100%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:14px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.verify-btn:hover{
+    background:var(--primary-dark);
+}
+
+/* ===== FOOTNOTE ===== */
+.note{
+    margin-top:20px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="verify-card">
+
+    <h2>OTP Verification</h2>
+    <p>Enter the 4-digit OTP sent to your email</p>
+
+    {% if err %}
+        <div class="error-msg">{{ err }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="otp">OTP</label>
+        <input
+            type="text"
+            id="otp"
+            name="motp"
+            placeholder="• • • •"
+            maxlength="4"
+            required
+        >
+
+        <button type="submit" class="verify-btn">
+            Verify OTP
+        </button>
+    </form>
+
+    <div class="note">
+        OTP is valid for 5 minutes.<br>
+        Check spam folder if not received.
+    </div>
+
+</div>
+
+</body>
+</html>

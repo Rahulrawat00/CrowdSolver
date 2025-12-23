@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block title %}CrowdSolver | Notifications{% endblock %}
+
+{% block extra_head %}
+<style>
+:root{
+    --primary:#2563eb;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Poppins",system-ui,sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
+        var(--bg);
+    padding:40px 20px;
+}
+
+/* ===== WRAPPER ===== */
+.notify-card{
+    max-width:1000px;
+    margin:auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:32px;
+    box-shadow:0 30px 60px rgba(0,0,0,.08);
+}
+
+.notify-card h2{
+    margin:0 0 22px;
+    font-size:24px;
+    font-weight:600;
+    color:var(--text);
+}
+
+/* ===== TABLE ===== */
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 12px;
+}
+
+/* HEAD */
+thead th{
+    text-align:left;
+    font-size:12px;
+    letter-spacing:.04em;
+    color:var(--muted);
+    font-weight:600;
+    padding:10px 14px;
+}
+
+/* ROW */
+tbody tr{
+    background:#f8fafc;
+    border-radius:14px;
+}
+
+tbody td{
+    padding:16px 14px;
+    font-size:14px;
+    color:var(--text);
+}
+
+tbody tr td:first-child{
+    border-top-left-radius:14px;
+    border-bottom-left-radius:14px;
+}
+
+tbody tr td:last-child{
+    border-top-right-radius:14px;
+    border-bottom-right-radius:14px;
+}
+
+/* DESCRIPTION */
+.desc{
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.5;
+}
+
+/* ACTIONS */
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#1e40af;
+}
+
+.btn-secondary{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text);
+}
+
+.btn-secondary:hover{
+    background:#f8fafc;
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:30px 0;
+    font-size:14px;
+    color:var(--muted);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    thead{
+        display:none;
+    }
+
+    tbody tr{
+        display:block;
+        padding:12px;
+    }
+
+    tbody td{
+        display:block;
+        padding:8px 0;
+    }
+
+    tbody td::before{
+        content:attr(data-label);
+        display:block;
+        font-size:11px;
+        color:var(--muted);
+        margin-bottom:4px;
+        text-transform:uppercase;
+        letter-spacing:.04em;
+    }
+
+    .actions{
+        margin-top:8px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="notify-card">
+
+    <h2>Notifications</h2>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Flat</th>
+                    <th>Submitted By</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for note in notify_issues %}
+                <tr>
+                    <td data-label="Title">
+                        <strong>{{ note.title }}</strong>
+                    </td>
+
+                    <td data-label="Description">
+                        <div class="desc">{{ note.description }}</div>
+                    </td>
+
+                    <td data-label="Flat">
+                        {{ note.flat_number }}
+                    </td>
+
+                    <td data-label="Submitted By">
+                        {{ note.created_by }}
+                    </td>
+
+                    <td data-label="Date">
+                        {{ note.created_at }}
+                    </td>
+
+                    <td data-label="Action">
+                        <div class="actions">
+                            <a href="{% url 'solutions' note.id %}" class="btn btn-primary" >
+                                Give Solution
+                            </a >
+                            <a href="{% url 'admindashboard' %}" class="btn btn-secondary">
+                                Back
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="empty">
+                        No issue notifications available
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="margin-top: 40px;">Pending Solutions for Approval</h2>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue Title</th>
+                    <th>Solution Title</th>
+                    <th>Description</th>
+                    <th>Submitted By</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for solution in pending_solutions %}
+                <tr>
+                    <td data-label="Issue Title">
+                        <strong>{{ solution.Issue_details.title }}</strong>
+                    </td>
+
+                    <td data-label="Solution Title">
+                        <strong>{{ solution.title }}</strong>
+                    </td>
+
+                    <td data-label="Description">
+                        <div class="desc">{{ solution.Description }}</div>
+                    </td>
+
+                    <td data-label="Submitted By">
+                        {{ solution.submitted_by }}
+                    </td>
+
+                    <td data-label="Date">
+                        {{ solution.Issue_details.created_at }}
+                    </td>
+
+                    <td data-label="Action">
+                        <div class="actions">
+                            <a href="{% url 'approve_solution' solution.id %}" class="btn btn-primary">
+                                Approve for Voting
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="empty">
+                        No pending solutions for approval
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

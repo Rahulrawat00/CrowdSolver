@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{% block title %}CrowdSolver{% endblock %}</title>
+
+<!-- Font Awesome (load ONCE here, used everywhere) -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+:root{
+    --primary:#2563eb;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter",system-ui,sans-serif;
+    text-decoration:none;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* ================= NAVBAR ================= */
+.topbar{
+    background:#fff;
+    border-bottom:1px solid var(--border);
+}
+
+.nav-container{
+    max-width:1200px;
+    margin:auto;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    position:relative;
+}
+
+.brand{
+    font-size:18px;
+    font-weight:600;
+    color:var(--primary);
+}
+
+/* MENU */
+.nav-menu{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.nav-menu a,
+.nav-menu span{
+    font-size:14px;
+    color:var(--muted);
+    font-weight:500;
+}
+
+.nav-menu a:hover{
+    color:var(--primary);
+}
+
+.logout{
+    color:#ef4444 !important;
+}
+
+/* HAMBURGER */
+.menu-toggle{
+    display:none;
+}
+
+.menu-icon{
+    display:none;
+    font-size:20px;
+    cursor:pointer;
+    color:var(--text);
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+    .menu-icon{
+        display:block;
+    }
+
+    .nav-menu{
+        position:absolute;
+        top:64px;
+        left:0;
+        width:100%;
+        background:#fff;
+        border-bottom:1px solid var(--border);
+        flex-direction:column;
+        align-items:flex-start;
+        padding:20px;
+        display:none;
+        gap:16px;
+    }
+
+    #menu-toggle:checked + label + .nav-menu{
+        display:flex;
+    }
+}
+
+/* ================= PAGE WRAPPER ================= */
+.page-wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 20px;
+}
+</style>
+
+{% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<div class="topbar">
+    <div class="nav-container">
+
+        <div class="brand">CrowdSolver</div>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">
+            <i class="fa-solid fa-bars"></i>
+        </label>
+
+        <div class="nav-menu">
+            <a href="{% url 'admindashboard' %}">Home</a>
+            <a href="{% url 'issuereport' %}">Issues</a>
+            <a href="{% url 'voting' %}">My Activity</a>
+            <a href="{% url 'notification' %}">Dashboard</a>
+
+            {% if request.session.member_id %}
+                <span>{{ request.session.member_name }}</span>
+                <a href="{% url 'memberlogout' %}" class="logout">Logout</a>
+            {% else %}
+                <a href="{% url 'memberlogin' %}">Member Login</a>
+                <a href="{% url 'membersignup' %}">Sign Up</a>
+                <a href="{% url 'secretarylogin' %}">Secretary Login</a>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= PAGE CONTENT ================= -->
+<div class="page-wrapper">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

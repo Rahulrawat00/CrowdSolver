@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit a New Issue{% endblock %}
+
+{% block extra_head %}
+<style>
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Segoe UI",sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f5f8ff;
+    color:#0f172a;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    max-width:760px;
+    margin:60px auto;
+    padding:0 20px;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-title{
+    text-align:center;
+    margin-bottom:36px;
+}
+
+.page-title h1{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.page-title p{
+    font-size:15px;
+    color:#64748b;
+    line-height:1.6;
+}
+
+/* ===== CARD ===== */
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:36px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* ===== CARD HEADER ===== */
+.card h3{
+    margin:0 0 6px;
+    font-size:18px;
+}
+
+.card small{
+    color:#64748b;
+    font-size:13px;
+}
+
+/* ===== FORM ===== */
+.form-group{
+    margin-top:22px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    font-weight:500;
+    margin-bottom:6px;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+}
+
+input::placeholder,
+textarea::placeholder{
+    color:#94a3b8;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+textarea{
+    resize:none;
+    min-height:120px;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+/* ===== INFO BOX ===== */
+.info{
+    margin-top:22px;
+    background:#f1f5ff;
+    border:1px solid #c7d2fe;
+    border-radius:12px;
+    padding:14px;
+    font-size:14px;
+    color:#1e3a8a;
+}
+
+/* ===== FILE UPLOAD ===== */
+.upload{
+    border:2px dashed #cbd5e1;
+    border-radius:12px;
+    padding:22px;
+    text-align:center;
+    color:#64748b;
+    font-size:14px;
+}
+
+/* ===== SUBMIT ===== */
+.actions{
+    margin-top:30px;
+    text-align:right;
+}
+
+button{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:12px 26px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1e40af;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+    .card{
+        padding:26px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-title">
+        <h1>Submit a New Issue</h1>
+        <p>
+            Help us improve the community by reporting issues that need attention.
+            Provide clear details so others can understand and support your concern.
+        </p>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="card">
+        <h3>Issue Details</h3>
+        <small>Fill in the information below to submit your issue. All fields are required.</small>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- TITLE -->
+            <div class="form-group">
+                <label>Issue Title</label>
+                <input type="text" name="title"
+                       placeholder="e.g. Water leakage in Block B staircase">
+            </div>
+
+            <!-- CATEGORY -->
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                    <option value="">Select a category for your issue</option>
+                    {% for cat in Category_name %}
+                        <option value="{{ cat.id }}">{{ cat.category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- LOCATION -->
+            <div class="form-group">
+                <label>Location</label>
+                <div class="grid">
+                    <input type="text" name="block" placeholder="Block / Wing">
+                    <input type="number" name="floor" placeholder="Floor">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="flat_number" placeholder="Flat Number">
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="form-group">
+                <label>Detailed Description</label>
+                <textarea name="description"
+                    placeholder="Provide a detailed description of the issue, including what needs to be fixed and why it's important..."></textarea>
+            </div>
+
+            <!-- INFO -->
+            <div class="info">
+                Your issue will be reviewed and made visible to the community.
+                Other members can vote and propose solutions.
+            </div>
+
+            <!-- UPLOAD -->
+            <div class="form-group">
+                <label>Upload Evidence (Optional)</label>
+                <div class="upload">
+                    Upload image or video (JPG, PNG, MP4 – max 10MB)
+                    <br><br>
+                    <input type="file" name="attachment">
+                </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="actions">
+                <button type="submit">Submit Issue</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block title %}CrowdSolver | Dashboard{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ================= HERO ================= */
+.hero{
+    padding:80px 40px 40px;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right center,#ede9fe,transparent);
+}
+
+.hero small{
+    color:var(--primary);
+    font-weight:500;
+    font-size:14px;
+}
+
+.hero h1{
+    margin:14px 0;
+    font-size:42px;
+    line-height:1.2;
+    font-weight:700;
+}
+
+.hero p{
+    max-width:520px;
+    font-size:16px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.hero-actions{
+    margin-top:28px;
+    display:flex;
+    gap:14px;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:#fff;
+    padding:12px 22px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:500;
+}
+
+.btn-secondary{
+    border:1px solid var(--border);
+    padding:12px 22px;
+    border-radius:8px;
+    font-size:14px;
+    color:var(--text);
+    background:#fff;
+}
+
+/* ================= STATS ================= */
+.stats{
+    padding:0 40px 40px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+}
+
+.stat span{
+    font-size:26px;
+    font-weight:600;
+    color:var(--primary);
+}
+
+.stat p{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--muted);
+}
+
+/* ================= SECTION ================= */
+.section{
+    padding:40px;
+}
+
+.section h2{
+    margin-bottom:6px;
+    font-size:22px;
+}
+
+.section small{
+    color:var(--muted);
+}
+
+/* ================= ACTIONS ================= */
+.actions{
+    margin-top:24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.action-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px;
+    text-align:center;
+    font-size:15px;
+    font-weight:500;
+    color:var(--text);
+    transition:.2s;
+}
+
+.action-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+/* ================= TABLE ================= */
+.table-box{
+    margin-top:40px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    font-size:13px;
+    color:var(--muted);
+    border-bottom:1px solid var(--border);
+    padding-bottom:12px;
+}
+
+td{
+    padding:14px 0;
+    font-size:14px;
+}
+
+tr:not(:last-child) td{
+    border-bottom:1px solid #f1f5f9;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+    .hero h1{
+        font-size:32px;
+    }
+}
+
+.fa-solid{
+    margin-right:12px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<div class="hero">
+    <small>
+        {% if request.session.member_id %}
+            Welcome back, {{ request.session.member_name }}
+        {% else %}
+            Welcome to CrowdSolver
+        {% endif %}
+    </small>
+
+    <h1>Shape Your Community's<br>Future</h1>
+
+    <p>
+        Submit issues, vote on priorities, and collaborate on solutions
+        that matter to your community.
+    </p>
+
+    <div class="hero-actions">
+        <a href="{% url 'ticketraise' %}" class="btn-primary">Submit New Issue</a>
+        <a href="{% url 'issuereport' %}" class="btn-secondary">Browse All Issues</a>
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="stat">
+        <span>{% if request.session.member_id %}{{ issue_count }}{% else %}0{% endif %}</span>
+        <p>Active Issues</p>
+    </div>
+
+    <div class="stat">
+        <span>{% if request.session.member_id %}{{ total_pending_voters|default:0 }}{% else %}0{% endif %}</span>
+        <p>Pending Votes</p>
+    </div>
+
+    <div class="stat">
+        <span>{% if request.session.member_id %}{{ resolved_issues_count }}{% else %}0{% endif %}</span>
+        <p>Resolved</p>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS + TABLE -->
+<div class="section">
+    <h2>Quick Actions</h2>
+    <small>Get started with common tasks</small>
+
+    <div class="actions">
+        <a href="{% url 'ticketraise' %}" class="action-card"><i class="fa-solid fa-plus"></i>Submit New Issue</a>
+        <a href="{% url 'issuereport' %}" class="action-card"><i class="fa-solid fa-eye"></i>View All Issues</a>
+        <a href="{% url 'voting' %}" class="action-card"><i class="fa-solid fa-list-check"></i>My Activity</a>
+        <a href="{% url 'notification' %}" class="action-card"><i class="fa-solid fa-bell"></i>Notifications</a>
+    </div>
+
+    <div class="table-box">
+        <h2 style="margin-bottom:16px;">My Issues</h2>
+
+        <table>
+            <tr>
+                <th>Issue</th>
+                <th>Category</th>
+                <th>Flat</th>
+            </tr>
+
+            {% if request.session.member_id %}
+                {% for iss in issue_details %}
+                <tr>
+                    <td>{{ iss.title }}</td>
+                    <td>{{ iss.category }}</td>
+                    <td>{{ iss.flat_number }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No issues added yet.</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">Please login to view your issues.</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+{% endblock %}

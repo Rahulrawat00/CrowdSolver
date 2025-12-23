@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}Issues{% endblock %}
+
+{% block extra_head %}
+<style>
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Segoe UI",sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f5f8ff;
+    color:#0f172a;
+}
+
+/* ===== PAGE ===== */
+.page{
+    max-width:1100px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+/* ===== HEADER ===== */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.header p{
+    margin-top:6px;
+    color:#64748b;
+    font-size:14px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* ===== SEARCH & FILTERS ===== */
+.filters{
+    margin:25px 0;
+}
+
+.search{
+    width:100%;
+    padding:12px 16px;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+}
+
+/* ===== ISSUE LIST ===== */
+.issue-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/* ===== ISSUE CARD ===== */
+.issue-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:22px;
+    display:grid;
+    grid-template-columns:1fr 120px;
+    gap:20px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.issue-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.issue-meta{
+    font-size:13px;
+    color:#64748b;
+    display:flex;
+    gap:14px;
+    margin-bottom:10px;
+}
+
+.issue-desc{
+    font-size:14px;
+    color:#475569;
+    line-height:1.6;
+}
+
+/* ===== BADGE ===== */
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:500;
+}
+
+.submitted{ background:#e0ecff; color:#1e3a8a; }
+.voting{ background:#ede9fe; color:#6d28d9; }
+.progress{ background:#fef3c7; color:#92400e; }
+.resolved{ background:#dcfce7; color:#166534; }
+
+/* ===== STATS ===== */
+.stats{
+    text-align:right;
+}
+
+.stats div{
+    margin-bottom:10px;
+}
+
+.stats strong{
+    font-size:18px;
+}
+
+.stats span{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>Issues</h1>
+            <p>Browse and vote on community issues</p>
+        </div>
+
+        <a href="{% url 'ticketraise' %}" class="btn-primary">+ Submit New Issue</a>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="filters">
+        <input class="search" placeholder="Search issues by title or description...">
+    </div>
+
+    <!-- ISSUE LIST -->
+    <div class="issue-list">
+
+        {% for isu in issue %}
+        <div class="issue-card">
+
+            <!-- LEFT -->
+            <div>
+                <div class="issue-title">
+                    {{ isu.title }}
+
+                    {% if isu.status == "Submitted" %}
+                        <span class="badge submitted">Submitted</span>
+                    {% elif isu.status == "Voting" %}
+                        <span class="badge voting">Voting</span>
+                    {% elif isu.status == "In Progress" %}
+                        <span class="badge progress">In Progress</span>
+                    {% elif isu.status == "Resolved" %}
+                        <span class="badge resolved">Resolved</span>
+                    {% endif %}
+                </div>
+
+                <div class="issue-meta">
+                    <span>{{ isu.category.category }}</span>
+                    <span>by {{ isu.created_by.memberName }}</span>
+                    <span>{{ isu.created_at|date:"M d, Y" }}</span>
+                </div>
+
+                <div class="issue-desc">
+                    {{ isu.description|truncatechars:200 }}
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="stats">
+                <div>
+                    <strong>{{ isu.approve_count|default:0 }}</strong>
+                    <span>votes</span>
+                </div>
+                <div>
+                    <strong>{{ isu.solutions.count|default:0 }}</strong>
+                    <span>solutions</span>
+                </div>
+            </div>
+
+        </div>
+        {% empty %}
+            <p style="color:#64748b;">No issues found.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

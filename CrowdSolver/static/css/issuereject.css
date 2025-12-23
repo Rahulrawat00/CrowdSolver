@@ -1,0 +1,56 @@
+/* ISSUE REJECTED PAGE */
+
+.rejected-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.rejected-box h3 {
+    background: #d32f2f;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.solution-card {
+    background: #f4f7fb;
+    padding: 14px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.solution-card button {
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.confirm-btn {
+    margin-top: 15px;
+    padding: 10px 14px;
+    background: #0d47a1;
+    border-radius: 8px;
+    color: white;
+    border: none;
+}
+
+.history-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.history-box .comment {
+    background: #eef3ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}

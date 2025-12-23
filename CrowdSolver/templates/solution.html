@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Solution</title>
+
+<style>
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1e40af;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Segoe UI",system-ui,sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
+        var(--bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+/* ===== CARD ===== */
+.form-card{
+    width:100%;
+    max-width:720px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px 42px;
+    box-shadow:0 25px 50px rgba(0,0,0,.08);
+}
+
+/* ===== SUCCESS MESSAGE ===== */
+.success{
+    margin-bottom:18px;
+    padding:12px 16px;
+    background:#ecfdf5;
+    color:#047857;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* ===== HEADER ===== */
+.form-header{
+    margin-bottom:28px;
+}
+
+.form-header h2{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.form-header p{
+    margin-top:6px;
+    font-size:14px;
+    color:var(--muted);
+}
+
+/* ===== FORM ===== */
+label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    font-size:14px;
+    margin-bottom:22px;
+    resize:vertical;
+}
+
+textarea{
+    min-height:130px;
+}
+
+input:focus,
+textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    background:#ffffff;
+}
+
+/* ===== ACTIONS ===== */
+.actions{
+    display:flex;
+    gap:14px;
+    margin-top:10px;
+}
+
+.btn-primary{
+    flex:1;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.btn-primary:hover{
+    background:var(--primary-dark);
+}
+
+.btn-secondary{
+    flex:1;
+    text-align:center;
+    padding:14px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+    background:#fff;
+    border:1px solid var(--border);
+    text-decoration:none;
+}
+
+.btn-secondary:hover{
+    background:#f8fafc;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+    .form-card{
+        padding:30px;
+    }
+    .actions{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>   
+
+<div class="form-card">
+
+    {% if mess %}
+        <div class="success">{{ mess }}</div>
+    {% endif %}
+
+    <div class="form-header">
+        <h2>Add Solution</h2>
+        <p>Provide a clear and helpful solution for the reported issue</p>
+    </div>
+
+    <form method="post" action="{% url 'solutions' issue.id %}">
+        {% csrf_token %}
+
+        <label>Title</label>
+        <input type="text" name="title" placeholder="Enter solution title" required>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Explain the solution in detail..." required></textarea>
+
+        <div class="actions">
+            <button type="submit" class="btn-primary">
+                Submit Solution
+            </button>
+
+            <a href="{% url 'notification' %}" class="btn-secondary">
+                Go Back
+            </a>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

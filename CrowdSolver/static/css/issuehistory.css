@@ -1,0 +1,27 @@
+/* ISSUE HISTORY PAGE */
+
+.vote-box {
+    background: #0d47a1;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.progress {
+    font-weight: bold;
+}
+
+.history-list {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.history-list .comment {
+    background: #eef3ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}

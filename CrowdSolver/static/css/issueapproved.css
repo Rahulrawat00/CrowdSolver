@@ -1,0 +1,49 @@
+/* ISSUE APPROVED PAGE */
+
+.approved-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.approved-box h3 {
+    background: #4caf50;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.vote-meter {
+    margin-top: 15px;
+}
+
+.bar {
+    width: 100%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 20px;
+    margin: 8px 0;
+}
+
+.bar-fill {
+    width: 72%;
+    height: 100%;
+    background: #4caf50;
+    border-radius: 20px;
+}
+
+.comments-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.comment {
+    padding: 12px;
+    background: #f1f5ff;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}

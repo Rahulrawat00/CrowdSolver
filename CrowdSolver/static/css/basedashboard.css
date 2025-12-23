@@ -1,0 +1,72 @@
+/* DASHBOARD LAYOUT (GLOBAL) */
+
+body {
+    margin: 0;
+    background: #f4f7fb;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #0d47a1;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+}
+
+.brand {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.side-link {
+    display: block;
+    padding: 12px 20px;
+    margin: 6px 0;
+    color: white;
+    text-decoration: none;
+    background: #1565c0;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.side-link:hover {
+    background: #0b3b85;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    margin-left: 220px;
+    min-height: 100vh;
+}
+
+/* TOP NAVBAR */
+.navbar {
+    height: 60px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.navbar input {
+    padding: 8px 12px;
+    border: 1px solid #cfd6e3;
+    border-radius: 8px;
+}
+
+.profile {
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+.page-container {
+    padding: 30px;
+}

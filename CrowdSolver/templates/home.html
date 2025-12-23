@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Your Role | CrowdSolver{% endblock %}
+
+{% block extra_head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card-container">
+        <h1 class="title">Select Your Role</h1>
+        <p class="subtitle">Choose how you want to access the system</p>
+
+        <div class="roles">
+
+            <!-- ADMIN CARD -->
+            <a href="/admin-login" class="role-card">
+                <div class="icon-circle">
+                    <span>👤</span>
+                </div>
+                <h2>Secretary (Admin)</h2>
+                <p>Manage building issues, users, and approvals.</p>
+            </a>
+
+            <!-- MEMBER CARD -->
+            <a href="{% url "membersignup" %}" class="role-card">
+                <div class="icon-circle">
+                    <span>🏠</span>
+                </div>
+                <h2>Member</h2>
+                <p>Raise issues, post solutions, vote & track updates.</p>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

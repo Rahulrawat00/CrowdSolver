@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrowdSolver | Member Signup</title>
+
+<style>
+:root{
+    --primary:#2563eb;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter",system-ui,sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
+        var(--bg);
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
+    height:64px;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.brand{
+    font-size:20px;
+    font-weight:600;
+    color:var(--primary);
+}
+
+/* ===== PAGE ===== */
+.page{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+/* ===== CARD ===== */
+.card{
+    width:100%;
+    max-width:620px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:42px 40px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.08);
+}
+
+/* ===== HEADER ===== */
+.card h2{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.card p{
+    margin:10px 0 30px;
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.6;
+}
+
+/* ===== FORM ===== */
+label{
+    display:block;
+    font-size:13px;
+    font-weight:500;
+    color:#334155;
+    margin-bottom:6px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:var(--primary);
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+/* ===== BUTTONS ===== */
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#1e40af;
+}
+
+.btn-secondary{
+    margin-top:12px;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text);
+}
+
+.btn-secondary:hover{
+    background:#f8fafc;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    margin-top:26px;
+    text-align:center;
+    font-size:14px;
+    color:var(--muted);
+}
+
+.footer a{
+    color:var(--primary);
+    font-weight:500;
+    text-decoration:none;
+}
+
+.footer a:hover{
+    text-decoration:underline;
+}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:34px 26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="brand">CrowdSolver</div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+    <div class="card">
+
+        <h2>Create Member Account</h2>
+        <p>
+            Join your residential community to raise issues,
+            vote on solutions, and stay informed in one place.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="membername" placeholder="Enter your name" required>
+                </div>
+
+                <div>
+                    <label>Flat Number</label>
+                    <input type="text" name="flatnumber" placeholder="A-302" required>
+                </div>
+            </div>
+
+            <label>Email Address</label>
+            <input type="email" name="memberemail" placeholder="example@gmail.com" required>
+
+            <label>Contact Number</label>
+            <input type="number" name="membercontact" maxlength="10" minlength="10"
+                   placeholder="Enter your contact number" required>
+
+            <div class="form-row">
+                <div>
+                    <label>Password</label>
+                    <input type="password" name="memberpass" placeholder="Create password" required>
+                </div>
+
+                <div>
+                    <label>Confirm Password</label>
+                    <input type="password" name="membercpass" placeholder="Confirm password" required>
+                </div>
+            </div>
+
+            <label>Resident Type</label>
+            <select name="residentType" required>
+                <option value="Renter">Renter</option>
+                <option value="Owner">Owner</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+
+        <!-- GO BACK -->
+        <a href="{% url 'memberlogin' %}">
+            <button class="btn btn-secondary">Go Back</button>
+        </a>
+
+        <div class="footer">
+            Already have an account?
+            <a href="{% url 'memberlogin' %}">Login</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

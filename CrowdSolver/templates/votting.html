@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block title %}Voting | CrowdSolver{% endblock %}
+
+{% block extra_head %}
+<style>
+:root{
+    --primary:#2563eb;
+    --bg:#f5f8ff;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#0f172a;
+    --muted:#64748b;
+    --success:#22c55e;
+    --danger:#ef4444;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:"Inter","Segoe UI",sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(600px circle at left top,#e0e7ff,transparent),
+        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
+        var(--bg);
+    padding:40px 20px;
+}
+
+/* ===== HEADER ===== */
+.page-header{
+    max-width:1200px;
+    margin:0 auto 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.page-header h1{
+    margin:0;
+    font-size:26px;
+    font-weight:600;
+}
+
+.back-btn{
+    padding:10px 16px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+
+/* ===== TABLE WRAPPER ===== */
+.table-wrap{
+    max-width:1200px;
+    margin:auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:26px;
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    font-size:12px;
+    color:var(--muted);
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+}
+
+td{
+    padding:18px 0;
+    font-size:14px;
+    vertical-align:top;
+}
+
+tr:not(:last-child) td{
+    border-bottom:1px solid #f1f5f9;
+}
+
+/* ===== TAG ===== */
+.category{
+    display:inline-block;
+    padding:4px 12px;
+    background:#eef2ff;
+    color:var(--primary);
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* ===== PROGRESS ===== */
+.progress{
+    width:140px;
+    height:12px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--primary);
+    font-size:10px;
+    color:#fff;
+    text-align:center;
+    line-height:12px;
+    font-weight:600;
+}
+
+/* ===== ACTIONS ===== */
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    padding:8px 14px;
+    border-radius:8px;
+    border:none;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.approve{ background:var(--success); color:#fff; }
+.reject{ background:var(--danger); color:#fff; }
+
+.voted{
+    padding:8px 14px;
+    border-radius:8px;
+    background:#f1f5f9;
+    color:var(--muted);
+    font-weight:600;
+    font-size:13px;
+}
+
+.login-link{
+    padding:8px 14px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--primary);
+    font-weight:600;
+    font-size:13px;
+    text-decoration:none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<div class="page-header">
+    <h1>{% if select_user %}Select User to Vote On{% else %}Voting on {{ selected_user.memberName }}'s Solutions{% endif %}</h1>
+    <button class="back-btn" onclick="history.back()">← Back</button>
+</div>
+
+{% if select_user %}
+<!-- USER SELECTION -->
+<div class="table-wrap">
+    <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">Voting is not started yet. Please select a user whose solutions you want to vote on.</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="selected_user_id" style="display: block; margin-bottom: 10px; font-weight: 600;">Select User:</label>
+        <select name="selected_user_id" id="selected_user_id" required style="padding: 10px; border: 1px solid var(--border); border-radius: 8px; width: 100%; max-width: 300px; margin-bottom: 20px;">
+            <option value="">Choose a user...</option>
+            {% for user in other_members %}
+            <option value="{{ user.id }}">{{ user.memberName }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="select_user" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Start Voting</button>
+    </form>
+</div>
+{% else %}
+<!-- TABLE -->
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Solution</th>
+                <th>Category</th>
+                <th>Approval</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for item in suggestions %}
+            <tr>
+                <td>
+                    <strong>{{ item.solution.title }}</strong><br>
+                    <span style="color:var(--muted);font-size:13px;">
+                        {{ item.solution.Description }}
+                    </span>
+                    <br>
+                    <span style="color:var(--primary);font-size:12px;font-weight:500;">
+                        {{ item.pending_count }} members left to vote
+                    </span>
+                </td>
+
+                <td>
+                    <span class="category">
+                        {{ item.solution.Issue_details.category }}
+                    </span>
+                </td>
+
+                <td>
+                    <div class="progress">
+                        <div class="progress-fill" style="width: {{ item.solution.approval_percent }}%;">
+                            {{ item.solution.approval_percent }}
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    {% if request.session.member_id %}
+                        {% if item.has_voted %}
+                            <span class="voted">Voted</span>
+                        {% else %}
+                            <form method="post" style="margin:0;">
+                                {% csrf_token %}
+                                <input type="hidden" name="solution_id" value="{{ item.solution.id }}">
+                                <div class="actions">
+                                    <button class="approve" name="vote" value="approve">Approve</button>
+                                    <button class="reject" name="vote" value="reject">Reject</button>
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'memberlogin' %}" class="login-link">
+                            Login to vote
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <button onclick="changeUser()" style="padding: 10px 20px; background: var(--muted); color: white; border: none; border-radius: 8px; cursor: pointer;">Change Selected User</button>
+</div>
+
+{% comment %} <script>
+function changeUser() {
+    if (confirm('Are you sure you want to change the selected user? Your current voting session will be reset.')) {
+        // Clear selected_user from session
+        fetch('/clear-selected-user/', { method: 'POST' })
+            .then(() => location.reload());
+    }
+}
+</script> {% endcomment %}
+
+{% endif %}
+
+{% endblock %}
