@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: crowdsolve
+    env: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn Crowdsolve.wsgi:application"
+    healthCheckPath: /
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: ALLOWED_HOSTS
+        value: "*.onrender.com"
+
+  - type: postgresql
+    name: crowdsolve-db
+    plan: free
+    ipAllowList: []
