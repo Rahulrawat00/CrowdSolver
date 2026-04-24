@@ -30,12 +30,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-axxd(1$$+1c0-q(vqo6@--e#xu
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
-    host.strip() for host in os.getenv(
-        'ALLOWED_HOSTS',
-        'crowdsolver.onrender.com,localhost,127.0.0.1,.onrender.com'
-    ).split(',')
+    host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
     if host.strip()
 ]
+if '.onrender.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.onrender.com')
 
 
 # Application definition
