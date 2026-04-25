@@ -117,6 +117,16 @@ body{
     color:var(--muted);
 }
 
+.error-msg{
+    margin-bottom:20px;
+    padding:14px 16px;
+    background:#fee2e2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+    border-radius:12px;
+    font-size:14px;
+}
+
 /* ===== FORM ===== */
 label{
     font-size:13px;
@@ -199,6 +209,10 @@ input:focus{
 
         <h2>Welcome back</h2>
         <p>Login to continue contributing to your community</p>
+
+        {% if err %}
+            <div class="error-msg">{{ err }}</div>
+        {% endif %}
 
         <form method="POST">
             {% csrf_token %}

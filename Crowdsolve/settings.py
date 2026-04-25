@@ -153,4 +153,10 @@ if not DEBUG:
     SECURE_CONTENT_SECURITY_POLICY = {
         'default-src': ("'self'",),
     }
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if os.getenv('CSRF_TRUSTED_ORIGINS') else []
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
+    if not CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS = ['https://crowdsolver.onrender.com']
+    else:
+        normalized = [origin.split('://')[-1] for origin in CSRF_TRUSTED_ORIGINS]
+        if 'crowdsolver.onrender.com' not in normalized:
+            CSRF_TRUSTED_ORIGINS.append('https://crowdsolver.onrender.com')

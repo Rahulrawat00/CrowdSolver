@@ -11,9 +11,9 @@ class Member(models.Model):
     memberName = models.CharField((""), max_length=50)
     memberMail = models.EmailField((""), max_length=254)
     memberContact = models.CharField((""), max_length=10)
-    memberPassword = models.CharField((""), max_length=50)
+    memberPassword = models.CharField((""), max_length=255)
     memberAddress = models.CharField((""), max_length=50)
-    memberImage = models.FileField((""), upload_to=None, max_length=100)
+    memberImage = models.FileField((""), upload_to=None, max_length=100, blank=True, null=True)
     memberType = models.CharField((""), max_length=50 ,choices=RESIDENT_TYPE, default=TYPE_OWNER )
 
 

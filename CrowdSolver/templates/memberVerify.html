@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block title %}Terminal | Verification Requests{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* ===== PAGE LAYOUT ===== */
+    .verify-page {
+        max-width: 800px;
+        margin: 40px auto;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== HEADER ===== */
+    .terminal-header {
+        margin-bottom: 40px;
+        border-left: 4px solid var(--accent-secondary);
+        padding-left: 20px;
+    }
+
+    .terminal-header h2 {
+        font-family: 'Syne', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    .terminal-header p {
+        color: var(--text-dim);
+        font-size: 1rem;
+        margin-top: 5px;
+        letter-spacing: 1px;
+    }
+
+    /* ===== VERIFICATION CARDS ===== */
+    .verify-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .verify-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 24px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.3s;
+    }
+
+    .verify-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--accent-primary);
+        transform: scale(1.01);
+    }
+
+    .identity-info strong {
+        display: block;
+        font-family: 'Syne', sans-serif;
+        font-size: 1.2rem;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+    }
+
+    .identity-info span {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-verify {
+        background: var(--text-main);
+        color: var(--bg-dark);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-verify:hover {
+        background: var(--accent-primary);
+        color: white;
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-outline {
+        display: inline-block;
+        margin-top: 40px;
+        padding: 12px 30px;
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        color: var(--text-dim);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .btn-outline:hover {
+        border-color: var(--text-main);
+        color: var(--text-main);
+        background: var(--glass-bg);
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+        text-align: center;
+        padding: 60px;
+        border: 2px dashed var(--glass-border);
+        border-radius: 20px;
+        color: var(--text-dim);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="verify-page">
+    <div class="terminal-header">
+        <h2>Authorization</h2>
+        <p>Pending identity synchronizations</p>
+    </div>
+
+    <div class="verify-list">
+        {% for s in pending %}
+        <div class="verify-card">
+            <div class="identity-info">
+                <strong>{{ s.memberName }}</strong>
+                <span>{{ s.memberMail }}</span>
+            </div>
+
+            <form method="POST" action="{% url 'verifyactions' s.id %}">
+                {% csrf_token %}
+                <button class="btn-verify">Authorize Access</button>
+            </form>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <i class="fa-solid fa-shield-check"></i>
+            <p>Database Clear. All entities currently verified.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{% url 'secretarydashboard' %}" class="btn-outline">
+            <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Return to Terminal
+        </a>
+    </div>
+</div>
+
+{% endblock %}

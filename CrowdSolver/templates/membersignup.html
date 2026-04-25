@@ -82,6 +82,16 @@ body{
     line-height:1.6;
 }
 
+.error-msg{
+    margin-bottom:20px;
+    padding:14px 16px;
+    background:#fee2e2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+    border-radius:12px;
+    font-size:14px;
+}
+
 /* ===== FORM ===== */
 label{
     display:block;
@@ -192,6 +202,22 @@ select:focus{
             vote on solutions, and stay informed in one place.
         </p>
 
+        {% if err1 %}
+            <div class="error-msg">{{ err1 }}</div>
+        {% endif %}
+        {% if err2 %}
+            <div class="error-msg">{{ err2 }}</div>
+        {% endif %}
+        {% if err3 %}
+            <div class="error-msg">{{ err3 }}</div>
+        {% endif %}
+        {% if err4 %}
+            <div class="error-msg">{{ err4 }}</div>
+        {% endif %}
+        {% if err5 %}
+            <div class="error-msg">{{ err5 }}</div>
+        {% endif %}
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
@@ -228,17 +254,15 @@ select:focus{
 
             <label>Resident Type</label>
             <select name="residentType" required>
-                <option value="Renter">Renter</option>
-                <option value="Owner">Owner</option>
+                <option value="RENTER">Renter</option>
+                <option value="OWNER">Owner</option>
             </select>
 
             <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
 
         <!-- GO BACK -->
-        <a href="{% url 'memberlogin' %}">
-            <button class="btn btn-secondary">Go Back</button>
-        </a>
+        <a class="btn btn-secondary" href="{% url 'memberlogin' %}">Go Back</a>
 
         <div class="footer">
             Already have an account?
