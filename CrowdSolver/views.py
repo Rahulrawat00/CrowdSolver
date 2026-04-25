@@ -64,13 +64,16 @@ def MemberSignup(request):
         request.session['otp'] = otp
         request.session.set_expiry(300)  # OTP valid for 5 minutes
 
-        send_mail(
-            subject='Your OTP Verification',
-            message=f'Your OTP is: {otp}',
-            from_email='rahulsinghrawat1667@gmail.com',
-            recipient_list=[memberEmail],
-            fail_silently=False
-        )
+        try:
+            send_mail(
+                subject='Your OTP Verification',
+                message=f'Your OTP is: {otp}',
+                from_email='rahulsinghrawat1667@gmail.com',
+                recipient_list=[memberEmail],
+                fail_silently=False
+            )
+        except Exception as e:
+            return render(request, 'membersignup.html', {'err6': 'Failed to send OTP email. Please check your email address and try again.'})
 
         return redirect('verifymember')
 

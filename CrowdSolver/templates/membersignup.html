@@ -217,6 +217,9 @@ select:focus{
         {% if err5 %}
             <div class="error-msg">{{ err5 }}</div>
         {% endif %}
+        {% if err6 %}
+            <div class="error-msg">{{ err6 }}</div>
+        {% endif %}
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
