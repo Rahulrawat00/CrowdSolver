@@ -23,6 +23,15 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html {
+    font-size: clamp(14px, 1.2vw, 16px);
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h3 { font-size: clamp(1.25rem, 2.3vw, 1.8rem); }
+p, label, button, input, textarea, select { font-size: clamp(0.95rem, 1.1vw, 1rem); }
+
 body {
     margin: 0;
     background-color: var(--bg-dark);
@@ -56,12 +65,12 @@ body {
 /* ================= VERIFY CARD ================= */
 .verify-card {
     width: 100%;
-    max-width: 420px;
+    max-width: min(100%, 420px);
     background: var(--glass-bg);
     backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
-    padding: 50px 40px;
+    padding: clamp(28px, 4vw, 50px);
     position: relative;
     box-shadow: 0 40px 100px rgba(0,0,0,0.6);
     text-align: center;
@@ -79,7 +88,7 @@ body {
 
 .verify-card h2 {
     font-family: 'Syne', sans-serif;
-    font-size: 28px;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
     font-weight: 800;
     margin: 0;
     letter-spacing: -1px;
@@ -88,7 +97,7 @@ body {
 
 .verify-card p {
     color: var(--text-dim);
-    font-size: 14px;
+    font-size: clamp(0.95rem, 1vw, 1rem);
     margin: 12px 0 35px;
     line-height: 1.5;
 }
@@ -124,7 +133,7 @@ input {
     padding: 18px;
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 26px;
+    font-size: clamp(1.6rem, 5vw, 2.1rem);
     font-weight: 700;
     letter-spacing: 12px;
     text-align: center;
@@ -170,7 +179,7 @@ input::placeholder {
 
 .note {
     margin-top: 30px;
-    font-size: 12px;
+    font-size: clamp(0.9rem, 1vw, 1rem);
     color: var(--text-dim);
     line-height: 1.6;
 }

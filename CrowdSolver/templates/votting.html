@@ -15,12 +15,16 @@
         --text-dim: #94A3B8;
     }
 
+    * {
+        box-sizing: border-box;
+    }
+
     /* ===== PAGE ANIMATION ===== */
     .voting-shell {
         animation: fadeIn 0.5s ease-out;
         max-width: 1100px;
         margin: 0 auto;
-        padding: 40px 0;
+        padding: clamp(24px, 3vw, 40px) 16px;
     }
 
     @keyframes fadeIn {
@@ -33,17 +37,23 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: 40px;
+        gap: 16px;
+        margin-bottom: 32px;
         border-bottom: 1px solid var(--glass-border);
         padding-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .terminal-header div {
+        min-width: 0;
     }
 
     .terminal-header h1 {
         font-family: 'Syne', sans-serif;
-        font-size: 2.5rem;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: -1.5px;
+        letter-spacing: -1.2px;
         margin: 0;
     }
 
@@ -56,9 +66,10 @@
         font-family: 'Syne', sans-serif;
         font-weight: 700;
         text-transform: uppercase;
-        font-size: 12px;
+        font-size: 0.82rem;
         cursor: pointer;
         transition: 0.3s;
+        white-space: nowrap;
     }
 
     .btn-back:hover {
@@ -72,21 +83,30 @@
         backdrop-filter: blur(20px);
         border: 1px solid var(--glass-border);
         border-radius: 24px;
-        padding: 60px;
+        padding: clamp(30px, 3vw, 60px);
         text-align: center;
+    }
+
+    .selection-panel h3 {
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        margin-bottom: 12px;
+    }
+
+    .selection-panel p {
+        font-size: clamp(0.95rem, 1.8vw, 1.05rem);
     }
 
     select {
         background: var(--bg-dark);
         border: 1px solid var(--glass-border);
         color: var(--text-main);
-        padding: 15px 25px;
+        padding: 14px 18px;
         border-radius: 12px;
         font-family: 'Space Grotesk', sans-serif;
         width: 100%;
         max-width: 400px;
         margin: 20px 0;
-        font-size: 16px;
+        font-size: clamp(0.95rem, 1.2vw, 1rem);
     }
 
     /* ===== TABLE STYLING ===== */
@@ -94,48 +114,53 @@
         background: var(--glass-bg);
         border: 1px solid var(--glass-border);
         border-radius: 24px;
-        overflow: hidden;
+        overflow-x: auto;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
+        min-width: 600px;
     }
 
     th {
         background: rgba(255,255,255,0.02);
         text-align: left;
-        padding: 20px;
-        font-size: 11px;
+        padding: 16px 18px;
+        font-size: clamp(0.72rem, 0.8vw, 0.9rem);
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 1.5px;
         color: var(--accent-primary);
         border-bottom: 1px solid var(--glass-border);
+        white-space: nowrap;
     }
 
     td {
-        padding: 25px 20px;
+        padding: 18px 16px;
         border-bottom: 1px solid var(--glass-border);
         vertical-align: middle;
+        font-size: clamp(0.85rem, 1vw, 0.98rem);
+        color: var(--text-main);
+        word-break: break-word;
     }
 
     .sol-title {
         font-family: 'Syne', sans-serif;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: clamp(1rem, 1.5vw, 1.2rem);
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
     }
 
     .sol-desc {
-        font-size: 0.9rem;
+        font-size: clamp(0.9rem, 1vw, 1rem);
         color: var(--text-dim);
-        line-height: 1.5;
+        line-height: 1.6;
     }
 
     /* ===== VOTE PROGRESS ===== */
     .energy-bar-bg {
-        width: 120px;
+        width: clamp(100px, 20vw, 140px);
         height: 8px;
         background: rgba(255,255,255,0.05);
         border-radius: 10px;
@@ -150,7 +175,7 @@
     }
 
     .percent-label {
-        font-size: 10px;
+        font-size: clamp(0.75rem, 0.9vw, 0.95rem);
         font-weight: 800;
         margin-top: 8px;
         display: block;
@@ -161,6 +186,8 @@
     .vote-actions {
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
     .vote-btn {
@@ -170,9 +197,12 @@
         font-family: 'Syne', sans-serif;
         font-weight: 800;
         text-transform: uppercase;
-        font-size: 11px;
+        font-size: clamp(0.75rem, 0.9vw, 0.95rem);
         cursor: pointer;
         transition: 0.3s;
+        white-space: nowrap;
+        min-width: 110px;
+        flex: 1 1 auto;
     }
 
     .btn-approve { background: var(--accent-success); color: white; }
@@ -184,7 +214,7 @@
     }
 
     .voted-badge {
-        font-size: 11px;
+        font-size: clamp(0.75rem, 0.85vw, 0.95rem);
         text-transform: uppercase;
         letter-spacing: 1px;
         color: var(--text-dim);
@@ -192,28 +222,94 @@
         background: rgba(255,255,255,0.05);
         padding: 8px 15px;
         border-radius: 8px;
+        display: inline-block;
     }
 
     .tag-category {
-        font-size: 10px;
-        padding: 4px 10px;
+        font-size: clamp(0.72rem, 0.85vw, 0.9rem);
+        padding: 5px 12px;
         border: 1px solid var(--accent-primary);
         color: var(--accent-primary);
         border-radius: 6px;
         text-transform: uppercase;
         font-weight: 700;
+        display: inline-flex;
+        align-items: center;
     }
 
     .empty-msg {
         text-align: center;
-        padding: 60px;
+        padding: 48px 24px;
         color: var(--text-dim);
         font-style: italic;
+        font-size: clamp(0.9rem, 1vw, 1rem);
     }
 
     .footer-actions {
         margin-top: 30px;
         text-align: center;
+    }
+
+    @media (max-width: 820px) {
+        .terminal-header {
+            align-items: flex-start;
+        }
+
+        .terminal-header h1 {
+            text-align: left;
+        }
+
+        table {
+            min-width: 0;
+        }
+
+        .terminal-table-wrap {
+            overflow-x: auto;
+        }
+
+        th, td {
+            padding: 14px 12px;
+        }
+
+        .energy-bar-bg {
+            width: 100%;
+            max-width: 140px;
+        }
+
+        .vote-actions {
+            justify-content: stretch;
+        }
+
+        .vote-btn {
+            flex: 1 1 140px;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .terminal-header {
+            align-items: flex-start;
+        }
+
+        .terminal-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .btn-back {
+            width: 100%;
+            text-align: center;
+        }
+
+        .selection-panel {
+            padding: 24px;
+        }
+
+        .vote-actions {
+            gap: 8px;
+        }
+
+        .tag-category, .percent-label, .voted-badge {
+            font-size: 0.82rem;
+        }
     }
 </style>
 {% endblock %}

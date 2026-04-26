@@ -26,6 +26,10 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html {
+    font-size: clamp(14px, 1.2vw, 16px);
+}
+
 body {
     margin: 0;
     background: var(--bg-dark);
@@ -33,6 +37,34 @@ body {
     font-family: 'Space Grotesk', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+h2 {
+    font-size: clamp(1.6rem, 3vw, 2.8rem);
+}
+
+h3 {
+    font-size: clamp(1.3rem, 2.2vw, 2.2rem);
+}
+
+h4, h5, h6 {
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+}
+
+p, label, button, input, textarea, select, a {
+    font-size: clamp(0.95rem, 1.1vw, 1rem);
+}
+
+button, input, textarea, select {
+    font-family: inherit;
+}
+
+img, video, iframe, table {
+    max-width: 100%;
 }
 
 /* ================= BACKGROUND ELEMENTS ================= */
@@ -60,12 +92,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 40px;
+    padding: clamp(16px, 2vw, 40px);
 }
 
 .brand {
     font-family: 'Syne', sans-serif;
-    font-size: 22px;
+    font-size: clamp(1.2rem, 1.4vw, 1.4rem);
     font-weight: 800;
     letter-spacing: -1px;
     color: var(--text-main);
@@ -191,7 +223,7 @@ body {
 .page-wrapper {
     max-width: 1300px;
     margin: auto;
-    padding: 40px;
+    padding: clamp(24px, 3vw, 40px);
     min-height: calc(100vh - var(--nav-height));
 }
 
