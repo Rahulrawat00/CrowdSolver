@@ -1,188 +1,247 @@
 {% extends 'base.html' %}
 
-{% block title %}Issues{% endblock %}
+{% block title %}CrowdSolver | Issue Terminal{% endblock %}
 
 {% block extra_head %}
 <style>
-*{
-    box-sizing:border-box;
-    font-family:"Inter","Segoe UI",sans-serif;
-}
+    :root {
+        --bg-dark: #0A0A0B;
+        --accent-primary: #6366F1;
+        --accent-secondary: #FF4DCC;
+        --glass-bg: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-main: #F4F4F9;
+        --text-dim: #94A3B8;
+        
+        /* Status Colors */
+        --s-submitted: #3B82F6;
+        --s-voting: #A855F7;
+        --s-progress: #F59E0B;
+        --s-resolved: #10B981;
+    }
 
-body{
-    margin:0;
-    background:#f5f8ff;
-    color:#0f172a;
-}
+    /* ===== HEADER SECTION ===== */
+    .terminal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--glass-border);
+    }
 
-/* ===== PAGE ===== */
-.page{
-    max-width:1100px;
-    margin:40px auto;
-    padding:0 20px;
-}
+    .terminal-header h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: 3rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        margin: 0;
+    }
 
-/* ===== HEADER ===== */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
+    .btn-deploy {
+        background: var(--text-main);
+        color: var(--bg-dark);
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.header h1{
-    margin:0;
-    font-size:28px;
-}
+    .btn-deploy:hover {
+        background: var(--accent-primary);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
 
-.header p{
-    margin-top:6px;
-    color:#64748b;
-    font-size:14px;
-}
+    /* ===== SEARCH BAR ===== */
+    .search-container {
+        margin-bottom: 30px;
+        position: relative;
+    }
 
-.btn-primary{
-    background:#2563eb;
-    color:#fff;
-    text-decoration:none;
-    padding:10px 18px;
-    border-radius:8px;
-    font-size:14px;
-    font-weight:500;
-}
+    .terminal-input {
+        width: 100%;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 18px 25px 18px 50px;
+        color: var(--text-main);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 15px;
+    }
 
-/* ===== SEARCH & FILTERS ===== */
-.filters{
-    margin:25px 0;
-}
+    .terminal-input:focus {
+        outline: none;
+        border-color: var(--accent-primary);
+        background: rgba(255,255,255,0.05);
+    }
 
-.search{
-    width:100%;
-    padding:12px 16px;
-    border-radius:10px;
-    border:1px solid #e5e7eb;
-    font-size:14px;
-}
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-primary);
+    }
 
-/* ===== ISSUE LIST ===== */
-.issue-list{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
+    /* ===== ISSUE CARDS ===== */
+    .issue-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 
-/* ===== ISSUE CARD ===== */
-.issue-card{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:14px;
-    padding:22px;
-    display:grid;
-    grid-template-columns:1fr 120px;
-    gap:20px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.05);
-}
+    .issue-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 1fr 180px;
+        gap: 30px;
+        position: relative;
+        overflow: hidden;
+    }
 
-.issue-title{
-    font-size:16px;
-    font-weight:600;
-    margin-bottom:6px;
-}
+    .issue-card:hover {
+        border-color: rgba(255,255,255,0.2);
+        transform: scale(1.005);
+        background: rgba(255,255,255,0.05);
+    }
 
-.issue-meta{
-    font-size:13px;
-    color:#64748b;
-    display:flex;
-    gap:14px;
-    margin-bottom:10px;
-}
+    .issue-main h2 {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.4rem;
+        margin: 0 0 10px 0;
+        color: var(--text-main);
+    }
 
-.issue-desc{
-    font-size:14px;
-    color:#475569;
-    line-height:1.6;
-}
+    .issue-meta {
+        display: flex;
+        gap: 20px;
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-/* ===== BADGE ===== */
-.badge{
-    display:inline-block;
-    padding:4px 10px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:500;
-}
+    .issue-meta span i {
+        color: var(--accent-primary);
+        margin-right: 5px;
+    }
 
-.submitted{ background:#e0ecff; color:#1e3a8a; }
-.voting{ background:#ede9fe; color:#6d28d9; }
-.progress{ background:#fef3c7; color:#92400e; }
-.resolved{ background:#dcfce7; color:#166534; }
+    .issue-desc {
+        color: var(--text-dim);
+        line-height: 1.6;
+        font-size: 14px;
+    }
 
-/* ===== STATS ===== */
-.stats{
-    text-align:right;
-}
+    /* ===== STATUS BADGES ===== */
+    .badge {
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
 
-.stats div{
-    margin-bottom:10px;
-}
+    .s-submitted { background: rgba(59, 130, 246, 0.1); color: var(--s-submitted); border: 1px solid var(--s-submitted); }
+    .s-voting { background: rgba(168, 85, 247, 0.1); color: var(--s-voting); border: 1px solid var(--s-voting); }
+    .s-progress { background: rgba(245, 158, 11, 0.1); color: var(--s-progress); border: 1px solid var(--s-progress); }
+    .s-resolved { background: rgba(16, 185, 129, 0.1); color: var(--s-resolved); border: 1px solid var(--s-resolved); }
 
-.stats strong{
-    font-size:18px;
-}
+    /* ===== STATS PANEL ===== */
+    .stats-panel {
+        background: rgba(0,0,0,0.2);
+        border-radius: 18px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+        border: 1px solid var(--glass-border);
+    }
 
-.stats span{
-    display:block;
-    font-size:12px;
-    color:#64748b;
-}
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-item strong {
+        display: block;
+        font-family: 'Syne', sans-serif;
+        font-size: 1.5rem;
+        color: var(--text-main);
+    }
+
+    .stat-item span {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .issue-card { grid-template-columns: 1fr; }
+        .terminal-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+        .terminal-header h1 { font-size: 2rem; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<div class="page">
+<div class="terminal-shell">
 
-    <!-- HEADER -->
-    <div class="header">
+    <header class="terminal-header">
         <div>
-            <h1>Issues</h1>
-            <p>Browse and vote on community issues</p>
+            <span style="color: var(--accent-primary); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;">Database: Records</span>
+            <h1>Central Issues</h1>
         </div>
 
-        <a href="{% url 'ticketraise' %}" class="btn-primary">+ Submit New Issue</a>
+        <a href="{% url 'ticketraise' %}" class="btn-deploy">
+            <i class="fa-solid fa-plus"></i> Open New Ticket
+        </a>
+    </header>
+
+    <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input class="terminal-input" placeholder="Query database by title, description, or architect...">
     </div>
 
-    <!-- SEARCH -->
-    <div class="filters">
-        <input class="search" placeholder="Search issues by title or description...">
-    </div>
-
-    <!-- ISSUE LIST -->
-    <div class="issue-list">
+    <div class="issue-grid">
 
         {% for isu in issue %}
         <div class="issue-card">
-
-            <!-- LEFT -->
-            <div>
-                <div class="issue-title">
+            
+            <div class="issue-main">
+                <h2>
                     {{ isu.title }}
-
                     {% if isu.status == "Submitted" %}
-                        <span class="badge submitted">Submitted</span>
+                        <span class="badge s-submitted">Submitted</span>
                     {% elif isu.status == "Voting" %}
-                        <span class="badge voting">Voting</span>
+                        <span class="badge s-voting">Consensus</span>
                     {% elif isu.status == "In Progress" %}
-                        <span class="badge progress">In Progress</span>
+                        <span class="badge s-progress">Active</span>
                     {% elif isu.status == "Resolved" %}
-                        <span class="badge resolved">Resolved</span>
+                        <span class="badge s-resolved">Fixed</span>
                     {% endif %}
-                </div>
+                </h2>
 
                 <div class="issue-meta">
-                    <span>{{ isu.category.category }}</span>
-                    <span>by {{ isu.created_by.memberName }}</span>
-                    <span>{{ isu.created_at|date:"M d, Y" }}</span>
+                    <span><i class="fa-solid fa-layer-group"></i> {{ isu.category.category }}</span>
+                    <span><i class="fa-solid fa-user-ninja"></i> {{ isu.created_by.memberName }}</span>
+                    <span><i class="fa-solid fa-calendar-day"></i> {{ isu.created_at|date:"M d, Y" }}</span>
                 </div>
 
                 <div class="issue-desc">
@@ -190,21 +249,23 @@ body{
                 </div>
             </div>
 
-            <!-- RIGHT -->
-            <div class="stats">
-                <div>
+            <div class="stats-panel">
+                <div class="stat-item">
                     <strong>{{ isu.approve_count|default:0 }}</strong>
-                    <span>votes</span>
+                    <span>Agreement</span>
                 </div>
-                <div>
+                <div class="stat-item">
                     <strong>{{ isu.solutions.count|default:0 }}</strong>
-                    <span>solutions</span>
+                    <span>Resolutions</span>
                 </div>
             </div>
 
         </div>
         {% empty %}
-            <p style="color:#64748b;">No issues found.</p>
+        <div style="text-align: center; padding: 100px; color: var(--text-dim); border: 2px dashed var(--glass-border); border-radius: 32px;">
+            <i class="fa-solid fa-ghost" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
+            <p>No records found in current sector.</p>
+        </div>
         {% endfor %}
 
     </div>
@@ -212,4 +273,3 @@ body{
 </div>
 
 {% endblock %}
-   

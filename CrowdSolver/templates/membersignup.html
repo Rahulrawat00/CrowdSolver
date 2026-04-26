@@ -3,273 +3,297 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CrowdSolver | Member Signup</title>
+<title>CrowdSolver | Registration Protocol</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
 
 <style>
-:root{
-    --primary:#2563eb;
-    --bg:#f5f8ff;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --text:#0f172a;
-    --muted:#64748b;
+:root {
+    --bg-dark: #0A0A0B;
+    --accent-primary: #6366F1;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #F4F4F9;
+    --text-dim: #94A3B8;
 }
 
-*{
-    box-sizing:border-box;
-    font-family:"Inter",system-ui,sans-serif;
+* {
+    box-sizing: border-box;
+    transition: all 0.25s ease;
 }
 
-body{
-    margin:0;
-    min-height:100vh;
-    background:
-        radial-gradient(600px circle at left top,#e0e7ff,transparent),
-        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
-        var(--bg);
-    display:flex;
-    flex-direction:column;
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
 }
 
-/* ===== TOP BAR ===== */
-.topbar{
-    height:64px;
-    background:#fff;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+/* ================= BACKGROUND ================= */
+.art-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle at 50% 50%, #16161a 0%, #0a0a0b 100%);
 }
 
-.brand{
-    font-size:20px;
-    font-weight:600;
-    color:var(--primary);
+.glow-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.08;
+}
+.orb-1 { background: var(--accent-primary); top: -200px; right: -100px; }
+
+/* ================= TOP BAR ================= */
+.topbar {
+    height: 70px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
 }
 
-/* ===== PAGE ===== */
-.page{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px 20px;
+.brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
 }
 
-/* ===== CARD ===== */
-.card{
-    width:100%;
-    max-width:620px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:42px 40px;
-    box-shadow:0 30px 60px rgba(0,0,0,0.08);
+/* ================= REGISTRATION CARD ================= */
+.page-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
 }
 
-/* ===== HEADER ===== */
-.card h2{
-    margin:0;
-    font-size:26px;
-    font-weight:600;
-    color:var(--text);
+.signup-card {
+    width: 100%;
+    max-width: 680px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    padding: 50px;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
 }
 
-.card p{
-    margin:10px 0 30px;
-    font-size:14px;
-    color:var(--muted);
-    line-height:1.6;
+/* Accent Line */
+.signup-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; width: 80%; height: 2px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 15px var(--accent-primary);
 }
 
-.error-msg{
-    margin-bottom:20px;
-    padding:14px 16px;
-    background:#fee2e2;
-    color:#991b1b;
-    border:1px solid #fecaca;
-    border-radius:12px;
-    font-size:14px;
+.signup-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
 }
 
-/* ===== FORM ===== */
-label{
-    display:block;
-    font-size:13px;
-    font-weight:500;
-    color:#334155;
-    margin-bottom:6px;
+.signup-card p {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin: 10px 0 40px;
+    line-height: 1.6;
 }
 
-input,
-select{
-    width:100%;
-    padding:12px 14px;
-    border-radius:10px;
-    border:1px solid var(--border);
-    font-size:14px;
-    margin-bottom:20px;
+/* ================= FORM ELEMENTS ================= */
+.error-msg {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-input:focus,
-select:focus{
-    outline:none;
-    border-color:var(--primary);
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.form-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
+.form-group {
+    margin-bottom: 24px;
 }
 
-/* ===== BUTTONS ===== */
-.btn{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
+.full-width { grid-column: span 2; }
+
+label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent-primary);
+    margin-bottom: 8px;
+    font-weight: 700;
 }
 
-.btn-primary{
-    background:var(--primary);
-    color:#fff;
+input, select {
+    width: 100%;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
 }
 
-.btn-primary:hover{
-    background:#1e40af;
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: rgba(255,255,255,0.05);
 }
 
-.btn-secondary{
-    margin-top:12px;
-    background:#fff;
-    border:1px solid var(--border);
-    color:var(--text);
+/* ================= BUTTONS ================= */
+.btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
 }
 
-.btn-secondary:hover{
-    background:#f8fafc;
+.btn-primary {
+    background: var(--text-main);
+    color: var(--bg-dark);
+    margin-top: 10px;
 }
 
-/* ===== FOOTER ===== */
-.footer{
-    margin-top:26px;
-    text-align:center;
-    font-size:14px;
-    color:var(--muted);
+.btn-primary:hover {
+    background: var(--accent-primary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
 }
 
-.footer a{
-    color:var(--primary);
-    font-weight:500;
-    text-decoration:none;
+.btn-secondary {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--glass-border);
+    margin-top: 15px;
 }
 
-.footer a:hover{
-    text-decoration:underline;
+.btn-secondary:hover {
+    color: var(--text-main);
+    border-color: var(--text-main);
 }
 
-/* RESPONSIVE */
-@media(max-width:640px){
-    .form-row{
-        grid-template-columns:1fr;
-    }
+/* ================= FOOTER ================= */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+}
 
-    .card{
-        padding:34px 26px;
-    }
+.footer a {
+    color: var(--accent-primary);
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+@media(max-width: 640px){
+    .form-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+    .signup-card { padding: 30px 24px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-    <div class="brand">CrowdSolver</div>
+<div class="art-bg">
+    <div class="glow-orb orb-1"></div>
 </div>
 
-<!-- PAGE -->
-<div class="page">
-    <div class="card">
+<nav class="topbar">
+    <div class="brand">CROWDSOLVER</div>
+</nav>
 
-        <h2>Create Member Account</h2>
-        <p>
-            Join your residential community to raise issues,
-            vote on solutions, and stay informed in one place.
-        </p>
+<div class="page-wrapper">
+    <div class="signup-card">
 
-        {% if err1 %}
-            <div class="error-msg">{{ err1 }}</div>
-        {% endif %}
-        {% if err2 %}
-            <div class="error-msg">{{ err2 }}</div>
-        {% endif %}
-        {% if err3 %}
-            <div class="error-msg">{{ err3 }}</div>
-        {% endif %}
-        {% if err4 %}
-            <div class="error-msg">{{ err4 }}</div>
-        {% endif %}
-        {% if err5 %}
-            <div class="error-msg">{{ err5 }}</div>
-        {% endif %}
-        {% if err6 %}
-            <div class="error-msg">{{ err6 }}</div>
-        {% endif %}
+        <h2>Member_Registration</h2>
+        <p>Establish your digital presence within the residential community to begin raising and resolving issues.</p>
+
+        {% if err1 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err1 }}</div>{% endif %}
+        {% if err2 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err2 }}</div>{% endif %}
+        {% if err3 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err3 }}</div>{% endif %}
+        {% if err4 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err4 }}</div>{% endif %}
+        {% if err5 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err5 }}</div>{% endif %}
+        {% if err6 %}<div class="error-msg"><i class="fa-solid fa-circle-exclamation"></i> {{ err6 }}</div>{% endif %}
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="form-row">
-                <div>
-                    <label>Name</label>
-                    <input type="text" name="membername" placeholder="Enter your name" required>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="membername" placeholder="John Doe" required>
                 </div>
 
-                <div>
-                    <label>Flat Number</label>
-                    <input type="text" name="flatnumber" placeholder="A-302" required>
+                <div class="form-group">
+                    <label>Flat Designation</label>
+                    <input type="text" name="flatnumber" placeholder="Sector-A 302" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Electronic Mail</label>
+                    <input type="email" name="memberemail" placeholder="identity@grid.io" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Primary Signal (Contact)</label>
+                    <input type="number" name="membercontact" maxlength="10" placeholder="10-digit frequency" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Access Key (Password)</label>
+                    <input type="password" name="memberpass" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm Key</label>
+                    <input type="password" name="membercpass" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Residential Status</label>
+                    <select name="residentType" required>
+                        <option value="OWNER">OWNER / PROPRIETOR</option>
+                        <option value="RENTER">RENTER / OCCUPANT</option>
+                    </select>
                 </div>
             </div>
 
-            <label>Email Address</label>
-            <input type="email" name="memberemail" placeholder="example@gmail.com" required>
-
-            <label>Contact Number</label>
-            <input type="number" name="membercontact" maxlength="10" minlength="10"
-                   placeholder="Enter your contact number" required>
-
-            <div class="form-row">
-                <div>
-                    <label>Password</label>
-                    <input type="password" name="memberpass" placeholder="Create password" required>
-                </div>
-
-                <div>
-                    <label>Confirm Password</label>
-                    <input type="password" name="membercpass" placeholder="Confirm password" required>
-                </div>
-            </div>
-
-            <label>Resident Type</label>
-            <select name="residentType" required>
-                <option value="RENTER">Renter</option>
-                <option value="OWNER">Owner</option>
-            </select>
-
-            <button type="submit" class="btn btn-primary">Create Account</button>
+            <button type="submit" class="btn btn-primary">Establish Account</button>
+            <a href="{% url 'memberlogin' %}" class="btn btn-secondary" style="display: block; text-align: center; text-decoration: none;">Return to Login</a>
         </form>
 
-        <!-- GO BACK -->
-        <a class="btn btn-secondary" href="{% url 'memberlogin' %}">Go Back</a>
-
         <div class="footer">
-            Already have an account?
-            <a href="{% url 'memberlogin' %}">Login</a>
+            Credentialed already? <a href="{% url 'memberlogin' %}">Access Portal</a>
         </div>
 
     </div>

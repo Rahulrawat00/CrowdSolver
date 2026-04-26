@@ -4,122 +4,163 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>{% block title %}CrowdSolver{% endblock %}</title>
+<title>{% block title %}CrowdSolver | Terminal{% endblock %}</title>
 
-<!-- Font Awesome (load ONCE here, used everywhere) -->
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
 
 <style>
-:root{
-    --primary:#2563eb;
-    --bg:#f5f8ff;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --text:#0f172a;
-    --muted:#64748b;
+:root {
+    --bg-dark: #0A0A0B;
+    --accent-primary: #6366F1;
+    --accent-secondary: #FF4DCC;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #F4F4F9;
+    --text-dim: #94A3B8;
 }
 
-*{
-    box-sizing:border-box;
-    font-family:"Inter",system-ui,sans-serif;
-    text-decoration:none;
+* {
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+    text-decoration: none;
 }
 
-body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
 }
 
-/* ================= NAVBAR ================= */
-.topbar{
-    background:#fff;
-    border-bottom:1px solid var(--border);
+/* ================= NAV BAR (TERMINAL HEADER) ================= */
+.topbar {
+    background: rgba(10, 10, 11, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.nav-container{
-    max-width:1200px;
-    margin:auto;
-    height:64px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 20px;
-    position:relative;
+.nav-container {
+    max-width: 1200px;
+    margin: auto;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
 }
 
-.brand{
-    font-size:18px;
-    font-weight:600;
-    color:var(--primary);
+.brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* MENU */
-.nav-menu{
-    display:flex;
-    align-items:center;
-    gap:28px;
+.brand::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--accent-primary);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-primary);
 }
 
-.nav-menu a,
-.nav-menu span{
-    font-size:14px;
-    color:var(--muted);
-    font-weight:500;
+/* NAV MENU */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 
-.nav-menu a:hover{
-    color:var(--primary);
+.nav-menu a {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.logout{
-    color:#ef4444 !important;
+.nav-menu a:hover {
+    color: var(--accent-primary);
+    text-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
 }
 
-/* HAMBURGER */
-.menu-toggle{
-    display:none;
+.user-tag {
+    font-size: 12px;
+    color: var(--accent-secondary);
+    font-weight: 700;
+    background: rgba(255, 77, 204, 0.1);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 77, 204, 0.2);
 }
 
-.menu-icon{
-    display:none;
-    font-size:20px;
-    cursor:pointer;
-    color:var(--text);
+.logout {
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 6px 14px;
+    border-radius: 8px;
 }
 
-/* ================= MOBILE ================= */
-@media(max-width:768px){
-    .menu-icon{
-        display:block;
+.logout:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+/* MOBILE TOGGLE */
+.menu-toggle { display: none; }
+.menu-icon {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* ================= MOBILE ADAPTATION ================= */
+@media(max-width: 768px) {
+    .menu-icon { display: block; }
+    .nav-menu {
+        position: fixed;
+        top: 71px;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: var(--bg-dark);
+        flex-direction: column;
+        overflow: hidden;
+        gap: 0;
+        border-bottom: 0 solid var(--glass-border);
     }
 
-    .nav-menu{
-        position:absolute;
-        top:64px;
-        left:0;
-        width:100%;
-        background:#fff;
-        border-bottom:1px solid var(--border);
-        flex-direction:column;
-        align-items:flex-start;
-        padding:20px;
-        display:none;
-        gap:16px;
-    }
-
-    #menu-toggle:checked + label + .nav-menu{
-        display:flex;
+    #menu-toggle:checked ~ .nav-menu {
+        height: calc(100vh - 71px);
+        padding: 40px 24px;
+        border-bottom-width: 1px;
+        gap: 30px;
     }
 }
 
-/* ================= PAGE WRAPPER ================= */
-.page-wrapper{
-    max-width:1200px;
-    margin:auto;
-    padding:30px 20px;
+/* ================= GLOBAL WRAPPER ================= */
+.page-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 24px;
+    animation: pageLoad 0.4s ease-out;
+}
+
+@keyframes pageLoad {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
 
@@ -128,40 +169,38 @@ body{
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<div class="topbar">
+<nav class="topbar">
     <div class="nav-container">
-
-        <div class="brand">CrowdSolver</div>
+        <a href="/" class="brand">CrowdSolver</a>
 
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="menu-icon">
-            <i class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-bars-staggered"></i>
         </label>
 
         <div class="nav-menu">
-            <a href="{% url 'admindashboard' %}">Home</a>
+            <a href="{% url 'admindashboard' %}"><i class="fa-solid fa-house-chimney-window"></i> Home</a>
             <a href="{% url 'issuereport' %}">Issues</a>
-            <a href="{% url 'voting' %}">My Activity</a>
+            <a href="{% url 'voting' %}">Activity</a>
             <a href="{% url 'notification' %}">Dashboard</a>
 
             {% if request.session.member_id %}
-                <span>{{ request.session.member_name }}</span>
+                <span class="user-tag">
+                    <i class="fa-solid fa-user-secret"></i> {{ request.session.member_name }}
+                </span>
                 <a href="{% url 'memberlogout' %}" class="logout">Logout</a>
             {% else %}
-                <a href="{% url 'memberlogin' %}">Member Login</a>
-                <a href="{% url 'membersignup' %}">Sign Up</a>
-                <a href="{% url 'secretarylogin' %}">Secretary Login</a>
+                <a href="{% url 'memberlogin' %}">Login</a>
+                <a href="{% url 'membersignup' %}" style="color: var(--accent-primary);">Sign Up</a>
+                <a href="{% url 'secretarylogin' %}" style="color: var(--accent-secondary);">Secretary</a>
             {% endif %}
         </div>
-
     </div>
-</div>
+</nav>
 
-<!-- ================= PAGE CONTENT ================= -->
-<div class="page-wrapper">
+<main class="page-wrapper">
     {% block content %}{% endblock %}
-</div>
+</main>
 
 </body>
 </html>

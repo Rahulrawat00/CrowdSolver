@@ -1,136 +1,174 @@
 {% extends 'base.html' %}
-{% block title %}Terminal | Verification Requests{% endblock %}
+{% block title %}CrowdSolver | Auth_Protocol{% endblock %}
 
 {% block extra_head %}
 <style>
     /* ===== PAGE LAYOUT ===== */
     .verify-page {
-        max-width: 800px;
+        max-width: 900px;
         margin: 40px auto;
-        animation: slideUp 0.5s ease-out;
+        animation: terminalEntry 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes terminalEntry {
+        from { opacity: 0; filter: blur(10px); transform: translateY(30px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
     }
 
     /* ===== HEADER ===== */
     .terminal-header {
-        margin-bottom: 40px;
-        border-left: 4px solid var(--accent-secondary);
-        padding-left: 20px;
+        margin-bottom: 50px;
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .terminal-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 4px;
+        background: var(--accent-secondary);
+        box-shadow: 0 0 15px var(--accent-secondary);
+    }
+
+    .terminal-header span {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: var(--accent-secondary);
+        font-weight: 700;
     }
 
     .terminal-header h2 {
         font-family: 'Syne', sans-serif;
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 800;
-        letter-spacing: -1.5px;
-        margin: 0;
+        letter-spacing: -2px;
+        margin: 5px 0 0 0;
         text-transform: uppercase;
-    }
-
-    .terminal-header p {
-        color: var(--text-dim);
-        font-size: 1rem;
-        margin-top: 5px;
-        letter-spacing: 1px;
     }
 
     /* ===== VERIFICATION CARDS ===== */
     .verify-list {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
     }
 
     .verify-card {
         background: var(--glass-bg);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
-        border-radius: 16px;
-        padding: 24px 30px;
-        display: flex;
-        justify-content: space-between;
+        border-radius: 20px;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
         align-items: center;
-        transition: 0.3s;
+        gap: 25px;
+        position: relative;
+        overflow: hidden;
     }
 
+    /* Card Glow Effect on Hover */
     .verify-card:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: var(--accent-primary);
-        transform: scale(1.01);
+        border-color: var(--accent-secondary);
+        background: rgba(255, 77, 204, 0.03);
+    }
+
+    .identity-info {
+        display: flex;
+        flex-direction: column;
     }
 
     .identity-info strong {
-        display: block;
         font-family: 'Syne', sans-serif;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         color: var(--text-main);
         letter-spacing: -0.5px;
     }
 
-    .identity-info span {
-        font-size: 0.9rem;
+    .identity-info .sub-tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         color: var(--text-dim);
-        font-family: 'Space Grotesk', sans-serif;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+
+    .sub-tag i { color: var(--accent-secondary); }
 
     /* ===== BUTTONS ===== */
     .btn-verify {
-        background: var(--text-main);
-        color: var(--bg-dark);
+        background: var(--accent-secondary);
+        color: white;
         border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
+        padding: 14px 28px;
+        border-radius: 12px;
         font-family: 'Syne', sans-serif;
         font-weight: 800;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         cursor: pointer;
-        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 20px rgba(255, 77, 204, 0.2);
     }
 
     .btn-verify:hover {
-        background: var(--accent-primary);
-        color: white;
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 77, 204, 0.4);
     }
 
-    .btn-outline {
-        display: inline-block;
-        margin-top: 40px;
-        padding: 12px 30px;
+    .btn-return {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 60px;
+        padding: 15px 35px;
         border: 1px solid var(--glass-border);
-        border-radius: 8px;
+        border-radius: 14px;
         color: var(--text-dim);
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: 0.3s;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 12px;
     }
 
-    .btn-outline:hover {
+    .btn-return:hover {
         border-color: var(--text-main);
         color: var(--text-main);
-        background: var(--glass-bg);
+        background: rgba(255,255,255,0.05);
     }
 
     /* ===== EMPTY STATE ===== */
     .empty-state {
         text-align: center;
-        padding: 60px;
-        border: 2px dashed var(--glass-border);
-        border-radius: 20px;
-        color: var(--text-dim);
+        padding: 100px 40px;
+        border: 1px dashed var(--glass-border);
+        border-radius: 32px;
+        background: rgba(0,0,0,0.2);
     }
 
     .empty-state i {
-        font-size: 3rem;
+        font-size: 4rem;
+        color: var(--accent-secondary);
         margin-bottom: 20px;
-        opacity: 0.5;
+        filter: drop-shadow(0 0 10px var(--accent-secondary));
+    }
+
+    .empty-state p {
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: var(--text-dim);
+    }
+
+    @media (max-width: 768px) {
+        .verify-card { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+        .terminal-header h2 { font-size: 2rem; }
     }
 </style>
 {% endblock %}
@@ -138,37 +176,50 @@
 {% block content %}
 
 <div class="verify-page">
-    <div class="terminal-header">
-        <h2>Authorization</h2>
-        <p>Pending identity synchronizations</p>
-    </div>
+    
+    <header class="terminal-header">
+        <span>Sector: Administration</span>
+        <h2>Auth_Protocol</h2>
+    </header>
 
     <div class="verify-list">
         {% for s in pending %}
         <div class="verify-card">
+            
             <div class="identity-info">
                 <strong>{{ s.memberName }}</strong>
-                <span>{{ s.memberMail }}</span>
+                <div class="sub-tag">
+                    <span><i class="fa-solid fa-at"></i> {{ s.memberMail }}</span>
+                    <span><i class="fa-solid fa-barcode"></i> ID: #00{{ s.id }}</span>
+                </div>
+            </div>
+
+            <div class="status-indicator">
+                <span style="font-size: 10px; color: var(--accent-secondary); background: rgba(255, 77, 204, 0.1); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 77, 204, 0.3);">
+                    PENDING_VERIFICATION
+                </span>
             </div>
 
             <form method="POST" action="{% url 'verifyactions' s.id %}">
                 {% csrf_token %}
                 <button class="btn-verify">Authorize Access</button>
             </form>
+
         </div>
         {% empty %}
         <div class="empty-state">
-            <i class="fa-solid fa-shield-check"></i>
-            <p>Database Clear. All entities currently verified.</p>
+            <i class="fa-solid fa-fingerprint"></i>
+            <p>Database Integrity Verified.<br><span style="font-size: 0.9rem; color: var(--text-dim);">No pending identity synchronizations found.</span></p>
         </div>
         {% endfor %}
     </div>
 
     <div style="text-align: center;">
-        <a href="{% url 'secretarydashboard' %}" class="btn-outline">
-            <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Return to Terminal
+        <a href="{% url 'secretarydashboard' %}" class="btn-return">
+            <i class="fa-solid fa-chevron-left"></i> Return to Terminal
         </a>
     </div>
+
 </div>
 
 {% endblock %}

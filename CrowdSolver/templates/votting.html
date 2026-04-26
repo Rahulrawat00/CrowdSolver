@@ -1,269 +1,337 @@
 {% extends 'base.html' %}
 
-{% block title %}Voting | CrowdSolver{% endblock %}
+{% block title %}Decision Engine | CrowdSolver{% endblock %}
 
 {% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
 <style>
-:root{
-    --primary:#2563eb;
-    --bg:#f5f8ff;
-    --card:#ffffff;
-    --border:#e5e7eb;
-    --text:#0f172a;
-    --muted:#64748b;
-    --success:#22c55e;
-    --danger:#ef4444;
+:root {
+    --bg-dark: #0A0A0B;
+    --accent-primary: #6366F1;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #F4F4F9;
+    --text-dim: #94A3B8;
+    --success: #10B981;
+    --danger: #EF4444;
 }
 
-*{
-    box-sizing:border-box;
-    font-family:"Inter","Segoe UI",sans-serif;
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    background-image: radial-gradient(circle at 2vw 2vh, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
 }
 
-body{
-    margin:0;
-    min-height:100vh;
-    background:
-        radial-gradient(600px circle at left top,#e0e7ff,transparent),
-        radial-gradient(600px circle at right bottom,#ede9fe,transparent),
-        var(--bg);
-    padding:40px 20px;
+/* ===== PAGE HEADER ===== */
+.page-header {
+    max-width: 1100px;
+    margin: 40px auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-/* ===== HEADER ===== */
-.page-header{
-    max-width:1200px;
-    margin:0 auto 24px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: -1.5px;
+    margin: 0;
 }
 
-.page-header h1{
-    margin:0;
-    font-size:26px;
-    font-weight:600;
+.back-btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-main);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
 }
 
-.back-btn{
-    padding:10px 16px;
-    border-radius:10px;
-    border:1px solid var(--border);
-    background:#fff;
-    font-size:14px;
-    cursor:pointer;
+.back-btn:hover {
+    border-color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.1);
 }
 
-/* ===== TABLE WRAPPER ===== */
-.table-wrap{
-    max-width:1200px;
-    margin:auto;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:26px;
-    box-shadow:0 18px 40px rgba(0,0,0,.08);
+/* ===== MAIN CONTAINER ===== */
+.decision-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.4);
 }
 
-/* ===== TABLE ===== */
-table{
-    width:100%;
-    border-collapse:collapse;
+/* ===== SELECTION FORM ===== */
+.select-container {
+    text-align: center;
+    padding: 40px 0;
 }
 
-th{
-    text-align:left;
-    font-size:12px;
-    color:var(--muted);
-    padding-bottom:14px;
-    border-bottom:1px solid var(--border);
+.select-container p {
+    color: var(--text-dim);
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
 }
 
-td{
-    padding:18px 0;
-    font-size:14px;
-    vertical-align:top;
+select {
+    background: #16161a;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 25px;
 }
 
-tr:not(:last-child) td{
-    border-bottom:1px solid #f1f5f9;
+.btn-start {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
 }
 
-/* ===== TAG ===== */
-.category{
-    display:inline-block;
-    padding:4px 12px;
-    background:#eef2ff;
-    color:var(--primary);
-    border-radius:999px;
-    font-size:12px;
-    font-weight:600;
+/* ===== VOTING TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
 }
 
-/* ===== PROGRESS ===== */
-.progress{
-    width:140px;
-    height:12px;
-    background:#e5e7eb;
-    border-radius:999px;
-    overflow:hidden;
+th {
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-primary);
+    padding: 0 20px 10px;
+    border-bottom: 1px solid var(--glass-border);
 }
 
-.progress-fill{
-    height:100%;
-    background:var(--primary);
-    font-size:10px;
-    color:#fff;
-    text-align:center;
-    line-height:12px;
-    font-weight:600;
+td {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 25px 20px;
+    font-size: 14px;
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
 }
 
-/* ===== ACTIONS ===== */
-.actions{
-    display:flex;
-    gap:10px;
+td:first-child { border-left: 1px solid var(--glass-border); border-radius: 16px 0 0 16px; }
+td:last-child { border-right: 1px solid var(--glass-border); border-radius: 0 16px 16px 0; }
+
+.sol-desc {
+    color: var(--text-dim);
+    font-size: 13px;
+    display: block;
+    margin-top: 8px;
+    line-height: 1.5;
 }
 
-.actions button{
-    padding:8px 14px;
-    border-radius:8px;
-    border:none;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
+.pending-status {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--accent-primary);
+    font-weight: 700;
 }
 
-.approve{ background:var(--success); color:#fff; }
-.reject{ background:var(--danger); color:#fff; }
-
-.voted{
-    padding:8px 14px;
-    border-radius:8px;
-    background:#f1f5f9;
-    color:var(--muted);
-    font-weight:600;
-    font-size:13px;
+.cat-pill {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent-primary);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-.login-link{
-    padding:8px 14px;
-    border-radius:8px;
-    border:1px solid var(--border);
-    background:#fff;
-    color:var(--primary);
-    font-weight:600;
-    font-size:13px;
-    text-decoration:none;
+/* ===== PROGRESS BAR ===== */
+.progress-container {
+    width: 120px;
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+}
+
+.perc-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+}
+
+/* ===== VOTE ACTIONS ===== */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.v-btn {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+}
+
+.v-btn.approve { background: var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); }
+.v-btn.reject { background: var(--danger); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2); }
+.v-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+.voted-badge {
+    color: var(--text-dim);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.login-link {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.change-user-box {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-muted {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-dim);
+    padding: 12px 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
 }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- HEADER -->
 <div class="page-header">
-    <h1>{% if select_user %}Select User to Vote On{% else %}Voting on {{ selected_user.memberName }}'s Solutions{% endif %}</h1>
-    <button class="back-btn" onclick="history.back()">← Back</button>
+    <h1>{% if select_user %}Target_Selection{% else %}Decision_Protocol: {{ selected_user.memberName }}{% endif %}</h1>
+    <button class="back-btn" onclick="history.back()">
+        <i class="fa-solid fa-chevron-left"></i> Archive
+    </button>
 </div>
 
-{% if select_user %}
-<!-- USER SELECTION -->
-<div class="table-wrap">
-    <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">Voting is not started yet. Please select a user whose solutions you want to vote on.</p>
-    <form method="post">
-        {% csrf_token %}
-        <label for="selected_user_id" style="display: block; margin-bottom: 10px; font-weight: 600;">Select User:</label>
-        <select name="selected_user_id" id="selected_user_id" required style="padding: 10px; border: 1px solid var(--border); border-radius: 8px; width: 100%; max-width: 300px; margin-bottom: 20px;">
-            <option value="">Choose a user...</option>
-            {% for user in other_members %}
-            <option value="{{ user.id }}">{{ user.memberName }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" name="select_user" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Start Voting</button>
-    </form>
-</div>
-{% else %}
-<!-- TABLE -->
-<div class="table-wrap">
+<div class="decision-wrap">
+    {% if select_user %}
+    <div class="select-container">
+        <p>Awaiting Target Identification. Select a member to review their proposed solutions.</p>
+        <form method="post">
+            {% csrf_token %}
+            <select name="selected_user_id" required>
+                <option value="">Initialize Target...</option>
+                {% for user in other_members %}
+                <option value="{{ user.id }}">{{ user.memberName }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" name="select_user" class="btn-start">Start Validation</button>
+        </form>
+    </div>
+    {% else %}
     <table>
         <thead>
             <tr>
-                <th>Solution</th>
-                <th>Category</th>
-                <th>Approval</th>
-                <th>Action</th>
+                <th>Proposed Solution</th>
+                <th>Classification</th>
+                <th>Approval Rating</th>
+                <th>Authorization</th>
             </tr>
         </thead>
-
         <tbody>
         {% for item in suggestions %}
             <tr>
                 <td>
-                    <strong>{{ item.solution.title }}</strong><br>
-                    <span style="color:var(--muted);font-size:13px;">
-                        {{ item.solution.Description }}
-                    </span>
-                    <br>
-                    <span style="color:var(--primary);font-size:12px;font-weight:500;">
-                        {{ item.pending_count }} members left to vote
+                    <strong style="letter-spacing: -0.5px;">{{ item.solution.title }}</strong>
+                    <span class="sol-desc">{{ item.solution.Description }}</span>
+                    <span class="pending-status">
+                        <i class="fa-solid fa-hourglass-half"></i> {{ item.pending_count }} members pending
                     </span>
                 </td>
 
                 <td>
-                    <span class="category">
-                        {{ item.solution.Issue_details.category }}
-                    </span>
+                    <span class="cat-pill">{{ item.solution.Issue_details.category }}</span>
                 </td>
 
                 <td>
-                    <div class="progress">
-                        <div class="progress-fill" style="width: {{ item.solution.approval_percent }}%;">
-                            {{ item.solution.approval_percent }}
-                        </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: {{ item.solution.approval_percent }}%;"></div>
                     </div>
+                    <span class="perc-text">{{ item.solution.approval_percent }}% Consistency</span>
                 </td>
 
                 <td>
                     {% if request.session.member_id %}
                         {% if item.has_voted %}
-                            <span class="voted">Voted</span>
+                            <span class="voted-badge"><i class="fa-solid fa-circle-check"></i> Recorded</span>
                         {% else %}
                             <form method="post" style="margin:0;">
                                 {% csrf_token %}
                                 <input type="hidden" name="solution_id" value="{{ item.solution.id }}">
                                 <div class="actions">
-                                    <button class="approve" name="vote" value="approve">Approve</button>
-                                    <button class="reject" name="vote" value="reject">Reject</button>
+                                    <button class="v-btn approve" name="vote" value="approve">Verify</button>
+                                    <button class="v-btn reject" name="vote" value="reject">Deny</button>
                                 </div>
                             </form>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'memberlogin' %}" class="login-link">
-                            Login to vote
-                        </a>
+                        <a href="{% url 'memberlogin' %}" class="login-link">Access Required</a>
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </div>
 
-<div style="text-align: center; margin-top: 20px;">
-    <button onclick="changeUser()" style="padding: 10px 20px; background: var(--muted); color: white; border: none; border-radius: 8px; cursor: pointer;">Change Selected User</button>
+{% if not select_user %}
+<div class="change-user-box">
+    <button onclick="changeUser()" class="btn-muted">Reselect Target Protocol</button>
 </div>
-
-{% comment %} <script>
-function changeUser() {
-    if (confirm('Are you sure you want to change the selected user? Your current voting session will be reset.')) {
-        // Clear selected_user from session
-        fetch('/clear-selected-user/', { method: 'POST' })
-            .then(() => location.reload());
-    }
-}
-</script> {% endcomment %}
-
 {% endif %}
 
 {% endblock %}
