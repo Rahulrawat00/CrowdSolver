@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>{% block title %}CrowdSolver | Terminal{% endblock %}</title>
+<title>{% block title %}CrowdSolver{% endblock %}</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
@@ -18,49 +18,58 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --text-main: #F4F4F9;
     --text-dim: #94A3B8;
+    --nav-height: 80px;
 }
 
 * {
     box-sizing: border-box;
-    transition: all 0.25s ease;
-    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
     margin: 0;
-    background-color: var(--bg-dark);
+    background: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
-    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* ================= NAV BAR (TERMINAL HEADER) ================= */
+/* ================= BACKGROUND ELEMENTS ================= */
+.base-art-blur {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2;
+    background: radial-gradient(circle at top right, #1a1a2e, #0a0a0b);
+}
+
+/* ================= NAVBAR ================= */
 .topbar {
-    background: rgba(10, 10, 11, 0.8);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--glass-border);
     position: sticky;
     top: 0;
     z-index: 1000;
+    background: rgba(10, 10, 11, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: auto;
-    height: 70px;
+    height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 40px;
 }
 
 .brand {
     font-family: 'Syne', sans-serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
-    text-transform: uppercase;
     letter-spacing: -1px;
     color: var(--text-main);
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -72,10 +81,10 @@ body {
     height: 12px;
     background: var(--accent-primary);
     border-radius: 2px;
-    box-shadow: 0 0 10px var(--accent-primary);
+    transform: rotate(45deg);
 }
 
-/* NAV MENU */
+/* MENU */
 .nav-menu {
     display: flex;
     align-items: center;
@@ -83,41 +92,40 @@ body {
 }
 
 .nav-menu a {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
     color: var(--text-dim);
+    font-weight: 500;
+    text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.nav-menu a:hover {
+.nav-menu a:hover, .nav-menu a.active {
     color: var(--accent-primary);
-    text-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
 }
 
 .user-tag {
-    font-size: 12px;
-    color: var(--accent-secondary);
-    font-weight: 700;
-    background: rgba(255, 77, 204, 0.1);
-    padding: 4px 12px;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 77, 204, 0.2);
-}
-
-.logout {
-    color: #ef4444 !important;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     padding: 6px 14px;
-    border-radius: 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--accent-secondary);
 }
 
-.logout:hover {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: #ef4444;
+.btn-logout {
+    color: #ff4d4d !important;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    padding: 8px 16px;
+    border-radius: 4px;
 }
 
-/* MOBILE TOGGLE */
+.btn-logout:hover {
+    background: rgba(255, 77, 77, 0.1);
+    border-color: #ff4d4d;
+}
+
+/* HAMBURGER */
 .menu-toggle { display: none; }
 .menu-icon {
     display: none;
@@ -126,52 +134,83 @@ body {
     color: var(--text-main);
 }
 
-/* ================= MOBILE ADAPTATION ================= */
-@media(max-width: 768px) {
+/* ================= MOBILE ================= */
+@media(max-width:992px){
     .menu-icon { display: block; }
     .nav-menu {
         position: fixed;
-        top: 71px;
+        top: var(--nav-height);
         left: 0;
         width: 100%;
         height: 0;
         background: var(--bg-dark);
         flex-direction: column;
+        justify-content: flex-start;
+        padding: 0;
         overflow: hidden;
-        gap: 0;
+        gap: 25px;
         border-bottom: 0 solid var(--glass-border);
     }
 
     #menu-toggle:checked ~ .nav-menu {
-        height: calc(100vh - 71px);
-        padding: 40px 24px;
+        height: auto;
+        padding: 40px 20px;
         border-bottom-width: 1px;
-        gap: 30px;
     }
 }
 
-/* ================= GLOBAL WRAPPER ================= */
-.page-wrapper {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 24px;
-    animation: pageLoad 0.4s ease-out;
+/* ================= MESSAGES ================= */
+.messages {
+    max-width: 1300px;
+    margin: 20px auto 0;
+    padding: 0 40px;
 }
 
-@keyframes pageLoad {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.message {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    animation: slideIn 0.4s ease forwards;
 }
+
+@keyframes slideIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.message.success { background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.2); }
+.message.error { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
+
+/* ================= PAGE WRAPPER ================= */
+.page-wrapper {
+    max-width: 1300px;
+    margin: auto;
+    padding: 40px;
+    min-height: calc(100vh - var(--nav-height));
+}
+
+/* Scrollbar Style */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
 </style>
 
 {% block extra_head %}{% endblock %}
 </head>
 
 <body>
+<div class="base-art-blur"></div>
 
-<nav class="topbar">
+<div class="topbar">
     <div class="nav-container">
-        <a href="/" class="brand">CrowdSolver</a>
+        <a href="{% url 'admindashboard' %}" class="brand">CROWDSOLVER</a>
 
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="menu-icon">
@@ -179,28 +218,40 @@ body {
         </label>
 
         <div class="nav-menu">
-            <a href="{% url 'admindashboard' %}"><i class="fa-solid fa-house-chimney-window"></i> Home</a>
+            <a href="{% url 'admindashboard' %}">Portal</a>
             <a href="{% url 'issuereport' %}">Issues</a>
-            <a href="{% url 'voting' %}">Activity</a>
-            <a href="{% url 'notification' %}">Dashboard</a>
+            <a href="{% url 'voting' %}">Governance</a>
+            <a href="{% url 'notification' %}">Alerts</a>
 
             {% if request.session.member_id %}
-                <span class="user-tag">
-                    <i class="fa-solid fa-user-secret"></i> {{ request.session.member_name }}
-                </span>
-                <a href="{% url 'memberlogout' %}" class="logout">Logout</a>
+                <span class="user-tag"><i class="fa-regular fa-user"></i> {{ request.session.member_name }}</span>
+                <a href="{% url 'memberlogout' %}" class="btn-logout">Logout</a>
+            {% elif request.session.secretary_id %}
+                <span class="user-tag" style="color: var(--accent-primary);">SEC_OFFICER</span>
+                <a href="{% url 'verificationrequest' %}">Requests</a>
+                <a href="{% url 'memberlogout' %}" class="btn-logout">Logout</a>
             {% else %}
                 <a href="{% url 'memberlogin' %}">Login</a>
-                <a href="{% url 'membersignup' %}" style="color: var(--accent-primary);">Sign Up</a>
-                <a href="{% url 'secretarylogin' %}" style="color: var(--accent-secondary);">Secretary</a>
+                <a href="{% url 'membersignup' %}" style="color: var(--accent-primary); font-weight: 700;">Join Us</a>
             {% endif %}
         </div>
     </div>
-</nav>
+</div>
 
-<main class="page-wrapper">
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            <i class="fa-solid {% if 'success' in message.tags %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="page-wrapper">
     {% block content %}{% endblock %}
-</main>
+</div>
 
 </body>
 </html>

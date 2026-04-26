@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CrowdSolver | Deployment Protocol</title>
+<title>CrowdSolver | Propose Resolution</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
@@ -11,7 +11,8 @@
 <style>
 :root {
     --bg-dark: #0A0A0B;
-    --accent-secondary: #FF4DCC; /* Secretary Accent */
+    --accent-primary: #6366F1;
+    --accent-secondary: #FF4DCC;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.1);
     --text-main: #F4F4F9;
@@ -20,102 +21,99 @@
 
 * {
     box-sizing: border-box;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
     margin: 0;
-    min-height: 100vh;
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
 }
 
-/* ================= BACKGROUND ================= */
+/* ================= ARTISTIC BACKGROUND ================= */
 .art-bg {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(circle at 10% 10%, #1a1018 0%, #0a0a0b 100%);
+    background: radial-gradient(circle at 10% 10%, #16161a 0%, #0a0a0b 100%);
 }
+
+.glow-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.1;
+}
+.orb-1 { background: var(--accent-primary); top: -100px; left: -100px; }
+.orb-2 { background: var(--accent-secondary); bottom: -100px; right: -100px; }
 
 /* ================= FORM CARD ================= */
 .form-card {
     width: 100%;
-    max-width: 700px;
+    max-width: 720px;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     border: 1px solid var(--glass-border);
     border-radius: 32px;
     padding: 50px;
     position: relative;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-    animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 50px 100px rgba(0,0,0,0.4);
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Status Indicator */
-.protocol-tag {
-    display: inline-flex;
+/* Status Banners */
+.msg-banner {
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent-secondary);
-    margin-bottom: 20px;
+    gap: 12px;
+}
+.success { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+.error { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+/* ================= HEADER ================= */
+.form-header {
+    margin-bottom: 40px;
+    border-left: 5px solid var(--accent-primary);
+    padding-left: 24px;
 }
 
-/* ================= CONTEXT BOX ================= */
-.issue-context {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 35px;
-}
-
-.issue-context span {
-    font-size: 10px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-}
-
-.issue-context h3 {
-    margin: 5px 0 0;
-    font-family: 'Syne', sans-serif;
-    font-size: 1.2rem;
-    color: var(--accent-secondary);
-}
-
-/* ================= INPUTS ================= */
 .form-header h2 {
     font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
+    font-size: 36px;
     font-weight: 800;
+    margin: 0;
     letter-spacing: -1.5px;
-    margin: 0 0 10px;
     text-transform: uppercase;
 }
 
+.form-header p {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* ================= FORM ARCHITECTURE ================= */
 label {
     display: block;
     font-size: 11px;
-    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--text-dim);
+    color: var(--accent-primary);
     margin-bottom: 10px;
+    font-weight: 700;
 }
 
 input, textarea {
@@ -123,132 +121,136 @@ input, textarea {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
-    padding: 16px;
+    padding: 16px 20px;
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
     font-size: 15px;
     margin-bottom: 25px;
+    resize: none;
 }
 
 input:focus, textarea:focus {
     outline: none;
     border-color: var(--accent-secondary);
     background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 20px rgba(255, 77, 204, 0.1);
 }
 
-textarea { min-height: 150px; resize: none; }
+textarea {
+    min-height: 160px;
+}
 
 /* ================= ACTIONS ================= */
 .actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 10px;
+    display: flex;
+    gap: 16px;
+    margin-top: 15px;
 }
 
-.btn {
+.btn-prime {
+    flex: 2;
     padding: 18px;
+    background: var(--text-main);
+    color: var(--bg-dark);
+    border: none;
     border-radius: 14px;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 12px;
     letter-spacing: 1.5px;
     cursor: pointer;
-    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 }
 
-.btn-primary {
-    background: var(--accent-secondary);
+.btn-prime:hover:not(:disabled) {
+    background: var(--accent-primary);
     color: white;
-    border: none;
-    box-shadow: 0 10px 20px rgba(255, 77, 204, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
 }
 
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(255, 77, 204, 0.4);
+.btn-prime:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
 }
 
-.btn-secondary {
+.btn-ghost {
+    flex: 1;
+    text-align: center;
+    padding: 18px;
     background: transparent;
     color: var(--text-dim);
     border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.btn-secondary:hover {
+.btn-ghost:hover {
     border-color: var(--text-main);
     color: var(--text-main);
-    background: rgba(255,255,255,0.05);
+    background: var(--glass-bg);
 }
 
-/* ================= MESSAGES ================= */
-.success-msg {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    font-size: 13px;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-@media (max-width: 600px) {
-    .form-card { padding: 30px; }
-    .actions { grid-template-columns: 1fr; }
-    .form-header h2 { font-size: 1.8rem; }
+@media(max-width: 600px) {
+    .form-card { padding: 30px 20px; }
+    .actions { flex-direction: column; }
+    .form-header h2 { font-size: 28px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="art-bg"></div>
+<div class="art-bg">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+</div>
 
 <div class="form-card">
 
     {% if mess %}
-        <div class="success-msg">
+        <div class="msg-banner success">
             <i class="fa-solid fa-circle-check"></i> {{ mess }}
         </div>
     {% endif %}
 
-    <div class="protocol-tag">
-        <i class="fa-solid fa-microchip"></i> Deployment Protocol
-    </div>
+    {% if err %}
+        <div class="msg-banner error">
+            <i class="fa-solid fa-triangle-exclamation"></i> {{ err }}
+        </div>
+    {% endif %}
 
     <div class="form-header">
-        <h2>Add Solution</h2>
-    </div>
-
-    <div class="issue-context">
-        <span>Targeting Issue:</span>
-        <h3>{{ issue.title }}</h3>
+        <h2>Propose Resolution</h2>
+        <p>Draft a definitive solution for the reported community issue.</p>
     </div>
 
     <form method="post" action="{% url 'solutions' issue.id %}">
         {% csrf_token %}
 
-        <label>Solution Headline</label>
-        <input type="text" name="title" placeholder="Summary of the action plan..." required>
+        <label>Resolution Title</label>
+        <input type="text" name="title" placeholder="Summarize your strategy..." required>
 
-        <label>Technical Details / Description</label>
-        <textarea name="description" placeholder="Explain the implementation steps in detail..." required></textarea>
+        <label>Detailed Intelligence</label>
+        <textarea name="description" placeholder="Provide step-by-step implementation details..." required></textarea>
 
         <div class="actions">
-            <button type="submit" class="btn btn-primary">
-                Deploy Solution <i class="fa-solid fa-paper-plane"></i>
+            <button type="submit" class="btn-prime" {% if already_submitted %}disabled{% endif %}>
+                <i class="fa-solid fa-paper-plane"></i>
+                {% if already_submitted %}Already Dispatched{% else %}Deploy Solution{% endif %}
             </button>
 
-            <a href="{% url 'notification' %}" class="btn btn-secondary">
-                <i class="fa-solid fa-chevron-left"></i> Cancel
+            <a href="{% url 'notification' %}" class="btn-ghost">
+                Abort
             </a>
         </div>
     </form>

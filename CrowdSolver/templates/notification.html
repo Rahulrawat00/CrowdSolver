@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}CrowdSolver | Terminal Notifications{% endblock %}
+{% block title %}CrowdSolver | Command Feed{% endblock %}
 
 {% block extra_head %}
 <style>
     /* ===== PAGE LAYOUT ===== */
     .notify-wrapper {
         max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
+        margin: 0 auto;
         animation: fadeIn 0.5s ease-out;
     }
 
@@ -17,265 +16,224 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== SECTION HEADERS ===== */
+    /* ===== HEADERS ===== */
     .section-header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin: 40px 0 25px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 30px;
+        border-left: 5px solid var(--accent-primary);
+        padding-left: 20px;
     }
 
     .section-header h2 {
         font-family: 'Syne', sans-serif;
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: -1px;
         margin: 0;
+        text-transform: uppercase;
     }
 
-    .header-icon {
-        color: var(--accent-secondary);
-        font-size: 1.5rem;
-        filter: drop-shadow(0 0 8px var(--accent-secondary));
-    }
-
-    /* ===== TERMINAL TABLES ===== */
+    /* ===== GLASS TABLE DESIGN ===== */
     .table-container {
         background: var(--glass-bg);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
         border-radius: 24px;
-        padding: 10px;
-        overflow: hidden;
+        padding: 20px;
+        margin-bottom: 60px;
+        overflow-x: auto;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        color: var(--text-main);
+        min-width: 800px;
     }
 
-    thead {
-        background: rgba(255, 255, 255, 0.02);
-    }
-
-    th {
-        font-family: 'Syne', sans-serif;
-        text-transform: uppercase;
-        font-size: 11px;
-        letter-spacing: 2px;
-        color: var(--accent-secondary);
-        padding: 20px 15px;
+    thead th {
         text-align: left;
-        font-weight: 800;
+        padding: 15px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent-primary);
+        border-bottom: 1px solid var(--glass-border);
+        font-weight: 700;
     }
 
     tbody tr {
-        border-bottom: 1px solid var(--glass-border);
-        transition: 0.3s;
-    }
-
-    tbody tr:last-child {
-        border-bottom: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        transition: 0.3s ease;
     }
 
     tbody tr:hover {
-        background: rgba(255, 77, 204, 0.03);
+        background: rgba(255, 255, 255, 0.03);
     }
 
-    td {
+    tbody td {
         padding: 20px 15px;
         font-size: 14px;
+        color: var(--text-main);
         vertical-align: middle;
     }
 
-    .text-bold {
+    /* CONTENT STYLES */
+    .title-cell {
         font-family: 'Syne', sans-serif;
         font-weight: 700;
-        font-size: 15px;
-        display: block;
-        margin-bottom: 4px;
+        color: var(--text-main);
     }
 
-    .text-dim {
+    .desc-text {
+        font-size: 13px;
         color: var(--text-dim);
-        font-size: 12px;
-        line-height: 1.4;
+        line-height: 1.6;
+        max-width: 300px;
     }
 
-    /* ===== ACTION BUTTONS ===== */
+    .meta-tag {
+        display: inline-block;
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        font-size: 11px;
+        color: var(--accent-secondary);
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* ACTIONS */
+    .action-group {
+        display: flex;
+        gap: 10px;
+    }
+
     .btn-action {
-        padding: 10px 20px;
-        border-radius: 10px;
+        padding: 10px 18px;
+        border-radius: 8px;
         font-family: 'Syne', sans-serif;
+        font-size: 11px;
         font-weight: 800;
-        font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 1px;
         text-decoration: none;
+        cursor: pointer;
+        border: none;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        transition: 0.3s;
     }
 
-    .btn-primary-alt {
-        background: var(--accent-secondary);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 77, 204, 0.2);
-    }
+    .btn-prime { background: var(--text-main); color: var(--bg-dark); }
+    .btn-prime:hover { background: var(--accent-primary); color: white; transform: translateY(-3px); }
+    
+    .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--glass-border); }
+    .btn-ghost:hover { border-color: var(--text-main); color: var(--text-main); }
 
-    .btn-primary-alt:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(255, 77, 204, 0.4);
-    }
-
-    .btn-secondary-alt {
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--text-main);
-        border: 1px solid var(--glass-border);
-    }
-
-    .btn-secondary-alt:hover {
-        background: var(--text-main);
-        color: var(--bg-dark);
-    }
-
-    /* ===== STATUS TAGS ===== */
-    .meta-tag {
-        font-size: 10px;
-        background: rgba(255,255,255,0.05);
-        padding: 4px 8px;
-        border-radius: 5px;
-        color: var(--text-dim);
-        border: 1px solid var(--glass-border);
-    }
-
-    /* ===== EMPTY STATE ===== */
+    /* EMPTY STATE */
     .empty-row {
         text-align: center;
-        padding: 60px !important;
+        padding: 50px !important;
         color: var(--text-dim);
         font-style: italic;
+        letter-spacing: 1px;
     }
 
+    /* RESPONSIVE */
     @media (max-width: 992px) {
-        .table-container { overflow-x: auto; }
-        table { min-width: 800px; }
+        .table-container { padding: 10px; border-radius: 12px; }
+        thead { display: none; }
+        tbody tr { display: block; padding: 20px; margin-bottom: 10px; border: 1px solid var(--glass-border); border-radius: 12px; }
+        tbody td { display: block; padding: 10px 0; border: none; text-align: right; position: relative; }
+        tbody td::before { content: attr(data-label); position: absolute; left: 0; font-size: 10px; color: var(--accent-primary); font-weight: 700; text-transform: uppercase; }
+        .desc-text { max-width: 100%; text-align: right; }
+        .action-group { justify-content: flex-end; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-
 <div class="notify-wrapper">
 
     <div class="section-header">
-        <i class="fa-solid fa-bell-on header-icon"></i>
-        <h2>System Alerts: New Issues</h2>
+        <h2>Live Alerts</h2>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th style="width: 25%;">Protocol / Title</th>
-                    <th style="width: 35%;">Description</th>
-                    <th style="width: 25%;">Origin (User/Flat)</th>
-                    <th style="width: 15%;">Actions</th>
+                    <th>Protocol Title</th>
+                    <th>Intelligence</th>
+                    <th>Location</th>
+                    <th>Origin</th>
+                    <th>Timestamp</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            {% for note in notify_issues %}
+                {% for note in notify_issues %}
                 <tr>
-                    <td>
-                        <span class="text-bold">{{ note.title }}</span>
-                        <span class="meta-tag">{{ note.created_at|date:"M d, H:i" }}</span>
-                    </td>
-                    <td>
-                        <div class="text-dim">{{ note.description|truncatechars:100 }}</div>
-                    </td>
-                    <td>
-                        <div class="text-bold" style="font-size: 13px;">{{ note.created_by }}</div>
-                        <div class="text-dim"><i class="fa-solid fa-location-dot"></i> {{ note.flat_number }}</div>
-                    </td>
-                    <td>
-                        <div style="display: flex; gap: 10px;">
-                            <a href="{% url 'solutions' note.id %}" class="btn-action btn-primary-alt">
-                                <i class="fa-solid fa-lightbulb"></i> Solve
+                    <td data-label="Protocol Title" class="title-cell">{{ note.title }}</td>
+                    <td data-label="Intelligence"><div class="desc-text">{{ note.description|truncatechars:80 }}</div></td>
+                    <td data-label="Location"><span class="meta-tag">Unit {{ note.flat_number }}</span></td>
+                    <td data-label="Origin">{{ note.created_by }}</td>
+                    <td data-label="Timestamp" style="font-size: 12px;">{{ note.created_at|date:"d M, H:i" }}</td>
+                    <td data-label="Action">
+                        <div class="action-group">
+                            <a href="{% url 'solutions' note.id %}" class="btn-action btn-prime">
+                                <i class="fa-solid fa-lightbulb"></i> Propose
                             </a>
+                            <a href="{% url 'admindashboard' %}" class="btn-action btn-ghost">Back</a>
                         </div>
                     </td>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4" class="empty-row">
-                        <i class="fa-solid fa-shield-check" style="display: block; font-size: 2rem; margin-bottom: 10px;"></i>
-                        No new issue alerts in current cycle.
-                    </td>
-                </tr>
-            {% endfor %}
+                {% empty %}
+                <tr><td colspan="6" class="empty-row">Terminal Quiet. No new alerts detected.</td></tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <div class="section-header" style="margin-top: 60px;">
-        <i class="fa-solid fa-hourglass-half header-icon"></i>
-        <h2>Pending Approvals: Solutions</h2>
+    <div class="section-header" style="border-color: var(--accent-secondary);">
+        <h2>Solution Validation</h2>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th style="width: 25%;">Context (Issue)</th>
-                    <th style="width: 40%;">Proposed Solution</th>
-                    <th style="width: 20%;">Architect</th>
-                    <th style="width: 15%;">Action</th>
+                    <th>Reference Issue</th>
+                    <th>Proposed Solution</th>
+                    <th>Origin</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            {% for solution in pending_solutions %}
+                {% for solution in pending_solutions %}
                 <tr>
-                    <td>
-                        <span class="text-dim" style="font-size: 10px; text-transform: uppercase;">Regarding:</span>
-                        <span class="text-bold">{{ solution.Issue_details.title }}</span>
+                    <td data-label="Reference Issue" class="title-cell">{{ solution.Issue_details.title }}</td>
+                    <td data-label="Proposed Solution">
+                        <strong style="color: var(--accent-secondary);">{{ solution.title }}</strong>
+                        <div class="desc-text">{{ solution.Description|truncatechars:80 }}</div>
                     </td>
-                    <td>
-                        <span class="text-bold" style="color: var(--accent-secondary);">{{ solution.title }}</span>
-                        <div class="text-dim">{{ solution.Description|truncatechars:120 }}</div>
+                    <td data-label="Origin">
+                        {{ solution.submitted_by }}<br>
+                        <small style="color: var(--text-dim);">{{ solution.Issue_details.created_at|date:"d M Y" }}</small>
                     </td>
-                    <td>
-                        <span class="text-bold" style="font-size: 13px;">{{ solution.submitted_by }}</span>
-                        <span class="meta-tag">{{ solution.Issue_details.created_at|date:"M d" }}</span>
-                    </td>
-                    <td>
-                        <a href="{% url 'approve_solution' solution.id %}" class="btn-action btn-primary-alt">
-                            <i class="fa-solid fa-check-double"></i> Authorize
-                        </a>
+                    <td data-label="Action">
+                        <form method="post" action="{% url 'approve_solution' solution.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-prime" style="background: var(--accent-secondary); color: white;">
+                                <i class="fa-solid fa-check-double"></i> Authorize
+                            </button>
+                        </form>
                     </td>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4" class="empty-row">
-                        <i class="fa-solid fa-circle-check" style="display: block; font-size: 2rem; margin-bottom: 10px;"></i>
-                        All proposed solutions have been processed.
-                    </td>
-                </tr>
-            {% endfor %}
+                {% empty %}
+                <tr><td colspan="4" class="empty-row">No solutions awaiting validation.</td></tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <div style="margin-top: 40px; text-align: center;">
-        <a href="{% url 'admindashboard' %}" class="btn-action btn-secondary-alt" style="padding: 12px 30px;">
-            <i class="fa-solid fa-arrow-left"></i> Return to Master Terminal
-        </a>
-    </div>
-
 </div>
-
 {% endblock %}
